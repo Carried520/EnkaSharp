@@ -1,15 +1,18 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Enka.Client.Entities;
 
+/// <summary>
+/// Provides general abstraction for general Enka API User requests.
+/// </summary>
 public class User
 {
     private readonly IMemoryCache _cache;
     private readonly HttpClient _httpClient;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
 
+    
     public User(IMemoryCache cache, JsonSerializerOptions jsonSerializerOptions, HttpClient httpClient)
     {
         _cache = cache;
@@ -17,31 +20,39 @@ public class User
         _httpClient = httpClient;
     }
 
-    public async Task<EnkaUser> GetEnkaUserAsync(string name)
+    /// <summary>
+    /// Gets hoyos for user.
+    /// </summary>
+    /// <param name="name">Name of the user</param>
+    /// <returns><see cref="Hoyos"/> representing Hoyos</returns>
+    /// <exception cref="InvalidOperationException">Thrown when cache doesn't have user - shouldn't happen </exception>
+    public async Task<Hoyos> GetHoyosAsync(string name)
     {
-        if (_cache.TryGetValue($"enka-user-{name}", out EnkaUser? user))
+        if (_cache.TryGetValue($"enka-user-{name}", out Hoyos? user))
         {
             return user ?? throw new InvalidOperationException();
         }
 
-        EnkaUser newUser = await RequestUserAsync(name);
+        Hoyos newUser = await Hoyos.RequestUserAsync(_httpClient, _jsonSerializerOptions, name);
         _cache.Set($"enka-user-{name}", newUser, TimeSpan.FromMinutes(5));
         return newUser;
     }
 
-
-    private async Task<EnkaUser> RequestUserAsync(string name)
+    /// <summary>
+    /// Gets snapshot.
+    /// </summary>
+    /// <param name="name">username</param>
+    /// <returns><see cref="Snapshot"/> representing snapshot.</returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    public async Task<Snapshot> GetSnapshotAsync(string name)
     {
-        HttpResponseMessage request = await _httpClient.GetAsync($"profile/{name}/hoyos/");
-        if (!request.IsSuccessStatusCode)
-            EnkaClient.HandleError(request.StatusCode);
+        if (_cache.TryGetValue($"enka-user-{name}", out Snapshot? user))
+        {
+            return user ?? throw new InvalidOperationException();
+        }
 
-        await using Stream responseStream = await request.Content.ReadAsStreamAsync();
-        Dictionary<string, JsonElement>? deserialized =
-            await JsonSerializer.DeserializeAsync<Dictionary<string, JsonElement>>(responseStream,
-                _jsonSerializerOptions);
-
-        return deserialized?.First().Value.Deserialize<EnkaUser>(_jsonSerializerOptions) ??
-               throw new InvalidOperationException("Could not parse requested user");
+        Snapshot newUser = await Snapshot.RequestSnapshotAsync(_httpClient, name);
+        _cache.Set($"enka-user-{name}", newUser, TimeSpan.FromMinutes(5));
+        return newUser;
     }
 }
