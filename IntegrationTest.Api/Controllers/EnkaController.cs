@@ -15,11 +15,19 @@ namespace IntegrationTest.Api.Controllers
             _enkaClient = enkaClient;
         }
 
-        [HttpGet]
+        [HttpGet("/hoyos")]
         public async Task<IActionResult> Get(string userName)
         {
-            EnkaUser user = await _enkaClient.User.GetEnkaUserAsync(userName);
+            Hoyos user = await _enkaClient.User.GetHoyosAsync(userName);
             return Ok(user);
         }
+        
+        [HttpGet("/snapshot")]
+        public async Task<IActionResult> GetSnapshot(string userName)
+        {
+            Snapshot user = await _enkaClient.User.GetSnapshotAsync(userName);
+            return Ok(user);
+        }
+        
     }
 }
