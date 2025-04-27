@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using System.Text.Json;
-using Enka.Client.Entities;
+using EnkaSharp.Entities.Base;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Enka.Client;
+namespace EnkaSharp;
 
 /// <summary>
 /// Base client type to serve as wrapper around Enka API.
@@ -55,4 +55,9 @@ public sealed class EnkaClient : IEnkaClient
     /// <inheritdoc/>
     /// </summary>
     public User User { get; }
+
+    public EnkaClient ShallowCopy()
+    {
+        return (EnkaClient)MemberwiseClone();
+    }
 }

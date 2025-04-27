@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Enka.Client;
+namespace EnkaSharp;
 
 /// <summary>
 /// Provides extensions to help register EnkaClient.

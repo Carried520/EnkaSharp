@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Enka.Client.Entities;
+namespace EnkaSharp.Entities.Base;
 
 public record Profile
 {

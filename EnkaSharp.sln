@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enka.Client", "Enka.Client\Enka.Client.csproj", "{F5FBB303-E847-4F0E-A2A5-2F1440575A6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnkaSharp", "EnkaSharp\EnkaSharp.csproj", "{F5FBB303-E847-4F0E-A2A5-2F1440575A6D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTest.Api", "IntegrationTest.Api\IntegrationTest.Api.csproj", "{B4CB6506-D93E-44A2-A864-8679D92C99E7}"
 EndProject

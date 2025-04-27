@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Enka.Client;
+namespace EnkaSharp;
 
 /// <summary>
 /// EnkaClient provider for Applications that don't use Dependency Injection.

@@ -1,7 +1,7 @@
-using System.Text.Json;
-using Enka.Client.Entities;
+using EnkaSharp.Entities;
+using EnkaSharp.Entities.Base;
 
-namespace Enka.Client;
+namespace EnkaSharp;
 
 /// <summary>
 /// Represents an abstraction for EnkaClient.

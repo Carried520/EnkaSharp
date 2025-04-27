@@ -1,7 +1,6 @@
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
-namespace Enka.Client.Entities;
+namespace EnkaSharp.Entities.Base;
 
 /// <summary>
 /// Represents data returned from Snapshot endpoint.

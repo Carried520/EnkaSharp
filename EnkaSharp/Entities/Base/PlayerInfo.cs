@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Enka.Client.Entities;
+namespace EnkaSharp.Entities.Base;
 
 /// <summary>
 /// Represents PlayerInfo.
@@ -13,6 +13,4 @@ public class PlayerInfo
     [JsonPropertyName("nameCardId")] public required int NameCardId { get; set; }
     [JsonPropertyName("worldLevel")] public required int WorldLevel { get; set; }
     [JsonPropertyName("fetterCount")] public required int FetterCount { get; set; }
-    
-    
 }

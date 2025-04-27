@@ -1,4 +1,4 @@
-using Enka.Client;
+using EnkaSharp;
 using Microsoft.Extensions.Caching.Memory;
 using Scalar.AspNetCore;
 

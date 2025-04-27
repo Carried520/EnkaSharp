@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Enka.Client.Entities;
+namespace EnkaSharp.Entities.Base;
 
 /// <summary>
 /// Provides general abstraction for general Enka API User requests.
@@ -12,7 +12,7 @@ public class User
     private readonly HttpClient _httpClient;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
 
-    
+
     public User(IMemoryCache cache, JsonSerializerOptions jsonSerializerOptions, HttpClient httpClient)
     {
         _cache = cache;
@@ -46,7 +46,7 @@ public class User
     /// <exception cref="InvalidOperationException"></exception>
     public async Task<Snapshot> GetSnapshotAsync(string name)
     {
-        if (_cache.TryGetValue($"enka-user-{name}", out Snapshot? user))
+        if (_cache.TryGetValue($"enka-snapshot-{name}", out Snapshot? user))
         {
             return user ?? throw new InvalidOperationException();
         }
@@ -54,5 +54,30 @@ public class User
         Snapshot newUser = await Snapshot.RequestSnapshotAsync(_httpClient, name);
         _cache.Set($"enka-user-{name}", newUser, TimeSpan.FromMinutes(5));
         return newUser;
+    }
+
+
+    public async Task<EnkaRestUser> GetUserAsync(long uid)
+    {
+        if (_cache.TryGetValue($"enka-user-uid-{uid}", out EnkaRestUser? user))
+        {
+            return user ?? throw new InvalidOperationException();
+        }
+
+        EnkaRestUser newRestUser = await EnkaRestUser.GetUserAsync(_httpClient, uid);
+        _cache.Set($"enka-user-uid-{uid}", newRestUser, TimeSpan.FromMinutes(5));
+        return newRestUser;
+    }
+
+    public async Task<EnkaInfo> GetUserInfoAsync(long uid)
+    {
+        if (_cache.TryGetValue($"enka-userinfo-uid-{uid}", out EnkaInfo? userInfo))
+        {
+            return userInfo ?? throw new InvalidOperationException();
+        }
+
+        EnkaInfo newUserInfo = await EnkaInfo.GetEnkaInfo(_httpClient, uid);
+        _cache.Set($"enka-userinfo-uid-{uid}", newUserInfo, TimeSpan.FromMinutes(5));
+        return newUserInfo;
     }
 }

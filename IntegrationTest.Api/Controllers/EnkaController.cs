@@ -1,5 +1,8 @@
-using Enka.Client;
-using Enka.Client.Entities;
+
+using EnkaSharp;
+using EnkaSharp.Entities;
+using EnkaSharp.Entities.Base;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntegrationTest.Api.Controllers
@@ -27,6 +30,21 @@ namespace IntegrationTest.Api.Controllers
         {
             Snapshot user = await _enkaClient.User.GetSnapshotAsync(userName);
             return Ok(user);
+        }
+
+        [HttpGet("/userinfo")]
+        public async Task<IActionResult> GetUserInfo(long uid)
+        {
+            EnkaInfo info = await _enkaClient.User.GetUserInfoAsync(uid);
+            return Ok(info);
+        }
+        
+        
+        [HttpGet("/user")]
+        public async Task<IActionResult> GetUser(long uid)
+        {
+            EnkaRestUser restUser = await _enkaClient.User.GetUserAsync(uid);
+            return Ok(restUser);
         }
         
     }
