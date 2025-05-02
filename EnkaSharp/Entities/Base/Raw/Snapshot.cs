@@ -1,18 +1,18 @@
 using System.Text.Json;
 
-namespace EnkaSharp.Entities.Base;
+namespace EnkaSharp.Entities.Base.Raw;
 
 /// <summary>
 /// Represents data returned from Snapshot endpoint.
 /// </summary>
-public record Snapshot
+public class Snapshot
 {
     private static readonly JsonSerializerOptions JsonSerializerOptions =
         new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
-    public required string Username { get; init; }
-    public required int Id { get; init; }
-    public required Profile Profile { get; init; }
+    public string? Username { get; set; }
+    public int Id { get; set; }
+    public Profile? Profile { get; set; }
 
 
     internal static async Task<Snapshot> RequestSnapshotAsync(HttpClient client, string name)

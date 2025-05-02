@@ -1,3 +1,4 @@
+using EnkaSharp.AssetHandlers.Genshin;
 using EnkaSharp.Entities;
 using EnkaSharp.Entities.Base;
 
@@ -12,4 +13,7 @@ public interface IEnkaClient
     /// Provides general abstraction for general Enka API User requests.
     /// </summary>
     public User User { get; }
+
+    public Task InitializeAsync();
+    public GenshinAssetData GetAssets();
 }

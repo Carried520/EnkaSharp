@@ -1,4 +1,5 @@
 using EnkaSharp;
+using IntegrationTest.Api;
 using Microsoft.Extensions.Caching.Memory;
 using Scalar.AspNetCore;
 
@@ -12,6 +13,7 @@ builder.Services.AddMemoryCache();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddHostedService<StartupService>();
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,13 +1,13 @@
 using System.Text.Json;
 
-namespace EnkaSharp.Entities.Base;
+namespace EnkaSharp.Entities.Base.Raw;
 
-public record EnkaInfo
+public class EnkaInfo
 {
-    public required PlayerInfo PlayerInfo { get; init; }
-    public int? Ttl { get; init; }
-    public string? Uid { get; init; }
-    public Owner? Owner { get; init; }
+    public RestPlayerInfo? PlayerInfo { get; set; }
+    public int? Ttl { get; set; }
+    public string? Uid { get; set; }
+    public Owner? Owner { get; set; }
 
 
     internal static async Task<EnkaInfo> GetEnkaInfo(HttpClient client, long uid)
@@ -23,10 +23,10 @@ public record EnkaInfo
     }
 }
 
-public record Owner
+public class Owner
 {
-    public string? Hash { get; init; }
-    public string? Username { get; init; }
-    public Profile? Profile { get; init; }
-    public int Id { get; init; }
+    public string? Hash { get; set; }
+    public string? Username { get; set; }
+    public Profile? Profile { get; set; }
+    public int Id { get; set; }
 }
