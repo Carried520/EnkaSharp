@@ -1,4 +1,6 @@
 using System.Text.Json;
+using EnkaSharp.Entities.Base.Abstractions;
+using EnkaSharp.Entities.Base.Raw;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace EnkaSharp.Entities.Base;
@@ -51,22 +53,23 @@ public class User
             return user ?? throw new InvalidOperationException();
         }
 
-        Snapshot newUser = await Snapshot.RequestSnapshotAsync(_httpClient, name);
+        var newUser = await Snapshot.RequestSnapshotAsync(_httpClient, name);
         _cache.Set($"enka-user-{name}", newUser, TimeSpan.FromMinutes(5));
         return newUser;
     }
 
 
-    public async Task<EnkaRestUser> GetUserAsync(long uid)
+    public async Task<EnkaUser> GetUserAsync(long uid)
     {
-        if (_cache.TryGetValue($"enka-user-uid-{uid}", out EnkaRestUser? user))
+        if (_cache.TryGetValue($"enka-user-uid-{uid}", out EnkaUser? user))
         {
             return user ?? throw new InvalidOperationException();
         }
 
         EnkaRestUser newRestUser = await EnkaRestUser.GetUserAsync(_httpClient, uid);
-        _cache.Set($"enka-user-uid-{uid}", newRestUser, TimeSpan.FromMinutes(5));
-        return newRestUser;
+        EnkaUser enkaUser = newRestUser.ToUser();
+        _cache.Set($"enka-user-uid-{uid}", enkaUser, TimeSpan.FromMinutes(5));
+        return enkaUser;
     }
 
     public async Task<EnkaInfo> GetUserInfoAsync(long uid)
@@ -76,7 +79,7 @@ public class User
             return userInfo ?? throw new InvalidOperationException();
         }
 
-        EnkaInfo newUserInfo = await EnkaInfo.GetEnkaInfo(_httpClient, uid);
+        var newUserInfo = await EnkaInfo.GetEnkaInfo(_httpClient, uid);
         _cache.Set($"enka-userinfo-uid-{uid}", newUserInfo, TimeSpan.FromMinutes(5));
         return newUserInfo;
     }

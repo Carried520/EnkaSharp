@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using EnkaSharp.Entities.Base.Raw;
 
 namespace EnkaSharp.Entities.Base;
 
@@ -8,14 +9,14 @@ namespace EnkaSharp.Entities.Base;
 /// </summary>
 public class Hoyos
 {
-    public required int Uid { get; set; }
+    public int Uid { get; set; }
     [JsonPropertyName("uid_public")] public bool IsUidPublic { get; set; }
     [JsonPropertyName("public")] public bool IsPublic { get; set; }
     [JsonPropertyName("live_public")] public bool IsLivePublic { get; set; }
     [JsonPropertyName("verified")] public bool IsVerified { get; set; }
-    public required PlayerInfo PlayerInfo { get; set; }
-    public required string Hash { get; set; }
-    public required string Region { get; set; }
+    public RestPlayerInfo? PlayerInfo { get; set; }
+    public string? Hash { get; set; }
+    public string? Region { get; set; }
     public int Order { get; set; }
     public Dictionary<string, int> AvatarOrder { get; set; } = [];
     public int HoyoType { get; set; }

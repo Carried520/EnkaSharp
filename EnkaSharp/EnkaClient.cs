@@ -1,6 +1,9 @@
 ﻿using System.Net;
 using System.Text.Json;
+using EnkaSharp.AssetHandlers;
+using EnkaSharp.AssetHandlers.Genshin;
 using EnkaSharp.Entities.Base;
+using EnkaSharp.Exceptions;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace EnkaSharp;
@@ -33,22 +36,32 @@ public sealed class EnkaClient : IEnkaClient
     /// Handles custom errors given by Enka API.
     /// </summary>
     /// <param name="statusCode">Status code given by HTTP request.</param>
-    /// <exception cref="HttpRequestException">Thrown when function hits specific HTTP Code.</exception>
     internal static void HandleError(HttpStatusCode statusCode)
     {
-        string? errorResponse = statusCode switch
+        // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+        switch ((int)statusCode)
         {
-            HttpStatusCode.BadRequest => "Invalid UID Format",
-            HttpStatusCode.NotFound => "Player does not exist",
-            HttpStatusCode.FailedDependency => "Game maintenance / everything is broken after the game update",
-            HttpStatusCode.TooManyRequests => "Rate-limited (either by my server or by MHY server)",
-            HttpStatusCode.InternalServerError => "Internal Server Error",
-            HttpStatusCode.ServiceUnavailable => "Enka's dev fault",
-            _ => null
-        };
+            case 400:
+                throw new InvalidUidException();
+            case 404:
+                throw new PlayerNotFoundException();
+            case 424:
+                throw new ApiBrokenException();
+            case 429:
+                throw new RateLimitException();
+            case 500:
+                throw new InternalServerErrorException();
+            case 503:
+                throw new ApiBrokenException();
+            default:
+                return;
+        }
+    }
 
-        if (!string.IsNullOrEmpty(errorResponse))
-            throw new HttpRequestException($"{errorResponse}");
+    public async Task InitializeAsync()
+    {
+        await Assets.InitAsync();
+        IsInitialized = true;
     }
 
     /// <summary>
@@ -56,8 +69,19 @@ public sealed class EnkaClient : IEnkaClient
     /// </summary>
     public User User { get; }
 
+    internal bool IsInitialized { get; set; } = false;
+    internal static AssetDispatcher Assets { get; set; } = new();
+
     public EnkaClient ShallowCopy()
     {
         return (EnkaClient)MemberwiseClone();
+    }
+
+    public GenshinAssetData GetAssets()
+    {
+        IAssetHandler handler = Assets[GameType.Genshin];
+        if (handler is not GenshinAssetHandler genshinAssetHandler)
+            throw new InvalidOperationException();
+        return genshinAssetHandler.Data;
     }
 }

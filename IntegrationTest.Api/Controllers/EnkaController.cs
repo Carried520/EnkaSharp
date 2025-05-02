@@ -2,6 +2,8 @@
 using EnkaSharp;
 using EnkaSharp.Entities;
 using EnkaSharp.Entities.Base;
+using EnkaSharp.Entities.Base.Abstractions;
+using EnkaSharp.Entities.Base.Raw;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,9 +45,10 @@ namespace IntegrationTest.Api.Controllers
         [HttpGet("/user")]
         public async Task<IActionResult> GetUser(long uid)
         {
-            EnkaRestUser restUser = await _enkaClient.User.GetUserAsync(uid);
+            EnkaUser restUser = await _enkaClient.User.GetUserAsync(uid);
             return Ok(restUser);
         }
+        
         
     }
 }
