@@ -19,7 +19,7 @@ namespace IntegrationTest.Api.Controllers
         public IActionResult GetLocalization()
         {
             Dictionary<string, Dictionary<string, string?>>? localization = _client.GetAssets().Localization;
-            return Ok(localization?["en"]);
+            return Ok(localization?["ru"]);
         }
 
 

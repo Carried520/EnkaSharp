@@ -2,12 +2,14 @@ using EnkaSharp.AssetHandlers;
 using EnkaSharp.AssetHandlers.Genshin;
 using EnkaSharp.Entities.Base.Abstractions;
 using EnkaSharp.Entities.Base.Raw;
+using EnkaSharp.Entities.Genshin;
+using EnkaSharp.Utils;
 
 namespace EnkaSharp.Mappers;
 
-public static class AvatarInfoMapper
+internal static class AvatarInfoMapper
 {
-    public static AvatarInfo MapAvatarInfo(RestAvatarInfo restAvatarInfo)
+    internal static AvatarInfo MapAvatarInfo(RestAvatarInfo restAvatarInfo)
     {
         return new AvatarInfo
         {
@@ -66,9 +68,8 @@ public static class AvatarInfoMapper
 
             TalentData talentInfo = genshinAssetHandler.Data.Talents?[skillId.ToString()] ?? throw new
                 InvalidOperationException();
-            string talentName = genshinAssetHandler.Data.TextMap?["en"][talentInfo.NameTextMapHash.ToString()] ??
-                                throw new InvalidOperationException();
-            var talentUrl = $"https://enka.network/ui/{talentInfo.Icon}.png";
+            string? talentName = genshinAssetHandler.GetDataFromTextMap(talentInfo.NameTextMapHash.ToString());
+            Uri talentUrl = UriConstants.GetAssetUri(talentInfo.Icon);
 
             int extraLevel = proudSkillExtraLevelMap.GetValueOrDefault(key, 0);
             talents.Add(new Talent
@@ -78,7 +79,7 @@ public static class AvatarInfoMapper
                 Level = baseLevel + extraLevel,
                 BaseLevel = baseLevel,
                 ExtraLevel = extraLevel,
-                IconUri = new Uri(talentUrl)
+                IconUri = talentUrl
             });
         }
 
@@ -98,37 +99,4 @@ public static class AvatarInfoMapper
             items.FirstOrDefault(equipItem => equipItem.GetEquipmentType() is EquipmentType.Weapon);
         return foundWeapon is null ? null : EquipmentMapper.MapWeapon(foundWeapon);
     }
-}
-
-public class AvatarInfo
-{
-    public long AvatarId { get; set; }
-    public AvatarStats? AvatarStats { get; set; }
-    public Dictionary<FightPropType, double> FightPropMap { get; set; } = [];
-    public int[] ConstellationIds { get; set; } = [];
-    public Talent[] Talents { get; set; } = [];
-
-    public Weapon? Weapon { get; set; }
-    public Artifact[] Artifacts { get; set; } = [];
-}
-
-public class AvatarStats
-{
-    public int Experience { get; set; }
-    public int AscensionLevel { get; set; }
-    public int Satiation { get; set; }
-    public int SatationPenalty { get; set; }
-    public int Level { get; set; }
-    public int Stamina { get; set; }
-    public int DiveStamina { get; set; }
-}
-
-public class Talent
-{
-    public int Id { get; set; }
-    public string? Name { get; set; }
-    public int Level { get; set; }
-    public int BaseLevel { get; set; }
-    public int ExtraLevel { get; set; }
-    public Uri? IconUri { get; set; }
 }

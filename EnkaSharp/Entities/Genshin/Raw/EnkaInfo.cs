@@ -1,6 +1,7 @@
 using System.Text.Json;
+using EnkaSharp.Entities.Base.Raw;
 
-namespace EnkaSharp.Entities.Base.Raw;
+namespace EnkaSharp.Entities.Genshin.Raw;
 
 public class EnkaInfo
 {
@@ -17,7 +18,7 @@ public class EnkaInfo
             EnkaClient.HandleError(request.StatusCode);
 
         await using Stream responseStream = await request.Content.ReadAsStreamAsync();
-        EnkaInfo? info = await JsonSerializer.DeserializeAsync<EnkaInfo>(responseStream,
+        var info = await JsonSerializer.DeserializeAsync<EnkaInfo>(responseStream,
             JsonSettings.CamelCase);
         return info ?? throw new InvalidOperationException();
     }

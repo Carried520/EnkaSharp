@@ -1,6 +1,6 @@
-using EnkaSharp.Mappers;
+using EnkaSharp.Entities.Base.Abstractions;
 
-namespace EnkaSharp.Entities.Base.Abstractions;
+namespace EnkaSharp.Entities.Genshin.Abstractions;
 
 public class Character
 {

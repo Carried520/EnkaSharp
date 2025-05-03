@@ -1,12 +1,14 @@
 using System.Text.Json;
 using EnkaSharp.AssetHandlers;
 using EnkaSharp.AssetHandlers.Genshin;
+using EnkaSharp.Entities.Base.Abstractions;
 using EnkaSharp.Entities.Base.Raw;
+using EnkaSharp.Entities.Genshin.Raw;
 using EnkaSharp.Mappers;
 
-namespace EnkaSharp.Entities.Base.Abstractions;
+namespace EnkaSharp.Entities.Genshin.Abstractions;
 
-public class EnkaRestUser : IEnkaUser
+internal class RestGenshinData : IGenshinData
 {
     public RestPlayerInfo? PlayerInfo { get; set; }
     public RestAvatarInfo[] AvatarInfoList { get; set; } = [];
@@ -14,19 +16,19 @@ public class EnkaRestUser : IEnkaUser
     public string? Uid { get; set; }
     public Owner? Owner { get; set; }
 
-    internal static async Task<EnkaRestUser> GetUserAsync(HttpClient client, long uid)
+    internal static async Task<RestGenshinData> GetUserAsync(HttpClient client, long uid)
     {
         HttpResponseMessage request = await client.GetAsync($"uid/{uid}");
         if (!request.IsSuccessStatusCode)
             EnkaClient.HandleError(request.StatusCode);
 
         await using Stream responseStream = await request.Content.ReadAsStreamAsync();
-        var user = await JsonSerializer.DeserializeAsync<EnkaRestUser>(responseStream,
+        var user = await JsonSerializer.DeserializeAsync<RestGenshinData>(responseStream,
             JsonSettings.CamelCase);
         return user ?? throw new InvalidOperationException();
     }
 
-    internal EnkaUser ToUser()
+    internal EnkaGenshinData ToGenshinData()
     {
         Dictionary<PropMapNodeType, int>[] propMaps =
             AvatarInfoList.Select(info => PropMapMapper.MapPropMap(info.PropMap)).ToArray();
@@ -39,7 +41,7 @@ public class EnkaRestUser : IEnkaUser
             throw new InvalidOperationException("Error getting character data");
 
 
-        var user = new EnkaUser(PlayerInfo, AvatarInfoList, Ttl, Uid, Owner)
+        var user = new EnkaGenshinData(PlayerInfo, AvatarInfoList, Ttl, Uid, Owner)
         {
             Characters = AvatarInfoList.Select(info =>
             {
@@ -47,7 +49,7 @@ public class EnkaRestUser : IEnkaUser
                 Dictionary<FightPropType, double> battleMap = PropMapMapper.MapFightProps(info.FightPropMap);
                 CharacterData? textHash = genshinAssets.Data.Characters?[info.AvatarId.ToString()];
                 string? name =
-                    genshinAssets.Data.Localization?["en"][
+                    genshinAssets.Data.Localization?[EnkaClient.Config.Language][
                         textHash?.NameTextMapHash.ToString() ?? throw new InvalidOperationException()];
                 return new Character(name ?? throw new InvalidOperationException(), propMap, battleMap);
             }).ToArray(),

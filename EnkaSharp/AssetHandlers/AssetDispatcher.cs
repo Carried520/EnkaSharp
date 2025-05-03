@@ -19,7 +19,15 @@ internal class AssetDispatcher
         }
     }
 
-    internal IAssetHandler this[GameType index] => _assetHandlers[index];
+    internal IAssetHandler this[GameType index]
+    {
+        get
+        {
+            if (!EnkaClient.IsInitialized)
+                throw new InvalidOperationException("Enka Client is not initialized!");
+            return _assetHandlers[index];
+        }
+    }
 
     internal async Task InitAsync()
     {

@@ -4,9 +4,9 @@ using EnkaSharp.Entities.Base.Raw;
 
 namespace EnkaSharp.Mappers;
 
-public static class PropMapMapper
+internal static class PropMapMapper
 {
-    public static Dictionary<PropMapNodeType, int> MapPropMap(Dictionary<string, PropMapNode> propMapNodes)
+    internal static Dictionary<PropMapNodeType, int> MapPropMap(Dictionary<string, PropMapNode> propMapNodes)
     {
         var dictOfStats = new Dictionary<PropMapNodeType, int>();
         foreach ((string? _, PropMapNode? node) in propMapNodes)
@@ -23,7 +23,7 @@ public static class PropMapMapper
         return dictOfStats;
     }
 
-    public static Dictionary<FightPropType, double> MapFightProps(Dictionary<string, double> fightMapNodes)
+    internal static Dictionary<FightPropType, double> MapFightProps(Dictionary<string, double> fightMapNodes)
     {
         var dictOfStats = new Dictionary<FightPropType, double>();
         foreach ((string key, double value) in fightMapNodes)

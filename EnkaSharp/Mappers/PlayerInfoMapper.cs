@@ -2,15 +2,18 @@ using EnkaSharp.AssetHandlers;
 using EnkaSharp.AssetHandlers.Genshin;
 using EnkaSharp.Entities.Base.Abstractions;
 using EnkaSharp.Entities.Base.Raw;
+using EnkaSharp.Entities.Genshin.Abstractions;
+using EnkaSharp.Utils;
 
 namespace EnkaSharp.Mappers;
 
-public static class PlayerInfoMapper
+internal static class PlayerInfoMapper
 {
-    public static PlayerInfo MapPlayerInfo(RestPlayerInfo restPlayerInfo)
+    internal static PlayerInfo MapPlayerInfo(RestPlayerInfo restPlayerInfo , string? uid)
     {
         return new PlayerInfo
         {
+            Uid = uid,
             Level = restPlayerInfo.Level,
             Nickname = restPlayerInfo.Nickname,
             Signature = restPlayerInfo.Signature,
@@ -48,8 +51,8 @@ public static class PlayerInfoMapper
         Dictionary<string, NameCard>? namecards = genshinAssetHandler.Data.NameCards;
         string? icon = namecards?[nameCardId.ToString()].Icon;
         if (icon == null) return null;
-        var iconUri = $"https://enka.network/ui/{icon}.png";
-        return new Uri(iconUri);
+        Uri iconUri = UriConstants.GetAssetUri(icon);
+        return iconUri;
 
     }
 
@@ -66,7 +69,7 @@ public static class PlayerInfoMapper
                 CharacterData characterData = genshinAssetHandler.Data.Characters?[node.AvatarId.ToString()] ??
                                               throw new
                                                   InvalidOperationException();
-                string name = genshinAssetHandler.Data.Localization?["en"][characterData.NameTextMapHash.ToString()] ??
+                string name = genshinAssetHandler.Data.Localization?[EnkaClient.Config.Language][characterData.NameTextMapHash.ToString()] ??
                               throw new InvalidOperationException();
 
                 return new AvatarInfoListItem

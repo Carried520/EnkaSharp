@@ -1,8 +1,8 @@
 namespace EnkaSharp.Entities.Base.Abstractions;
 
-public static class FightProps
+internal static class FightProps
 {
-    public static readonly Dictionary<string, FightPropType> FightPropMap = new()
+    internal static readonly Dictionary<string, FightPropType> FightPropMap = new()
     {
         { "FIGHT_PROP_HP", FightPropType.BaseHp },
         { "FIGHT_PROP_ATTACK", FightPropType.BaseAttack },
