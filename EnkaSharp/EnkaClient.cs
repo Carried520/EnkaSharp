@@ -2,7 +2,7 @@
 using System.Text.Json;
 using EnkaSharp.AssetHandlers;
 using EnkaSharp.AssetHandlers.Genshin;
-using EnkaSharp.Entities.Base;
+using EnkaSharp.Entities.Genshin;
 using EnkaSharp.Exceptions;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -14,21 +14,13 @@ namespace EnkaSharp;
 /// </summary>
 public sealed class EnkaClient : IEnkaClient
 {
-    private readonly HttpClient _httpClient;
-    private readonly IMemoryCache _cache;
-
-    private readonly JsonSerializerOptions _jsonSerializerOptions =
-        new() { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower };
-
-
-    public EnkaClient(HttpClient httpClient, string userAgent, IMemoryCache cache)
+    public EnkaClient(HttpClient httpClient, EnkaClientConfig clientConfig, IMemoryCache cache)
     {
-        _httpClient = httpClient;
-        _cache = cache;
-        _httpClient.BaseAddress = new Uri("https://enka.network/api/");
-        _httpClient.DefaultRequestHeaders.Add("User-Agent", userAgent);
+        httpClient.BaseAddress = new Uri("https://enka.network/api/");
+        httpClient.DefaultRequestHeaders.Add("User-Agent", clientConfig.UserAgent);
 
-        User = new User(_cache, _jsonSerializerOptions, _httpClient);
+        Genshin = new Genshin(cache, httpClient);
+        Config = clientConfig;
     }
 
 
@@ -67,10 +59,13 @@ public sealed class EnkaClient : IEnkaClient
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public User User { get; }
+    public Genshin Genshin { get; }
 
-    internal bool IsInitialized { get; set; } = false;
+    internal static EnkaClientConfig Config { get; set; } = new();
+
+    internal static bool IsInitialized { get; set; } = false;
     internal static AssetDispatcher Assets { get; set; } = new();
+
 
     public EnkaClient ShallowCopy()
     {

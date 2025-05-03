@@ -1,8 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using EnkaSharp.Entities.Base.Raw;
 
-namespace EnkaSharp.Entities.Base;
+namespace EnkaSharp.Entities.Base.Raw;
 
 /// <summary>
 /// Represents data returned from hoyos endpoint.

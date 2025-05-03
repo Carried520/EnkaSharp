@@ -17,6 +17,12 @@ internal class GenshinAssetHandler : IAssetHandler
 
     public GameType GameType { get; set; } = GameType.Genshin;
 
+    internal string? GetDataFromTextMap(string nameTextMapHash)
+    {
+        Dictionary<string, string>? localizedTextMap = Data.TextMap?[EnkaClient.Config.Language];
+        return localizedTextMap?[nameTextMapHash];
+    }
+    
     private async Task DownloadGenshinAssetsAsync()
     {
         Data.Localization =

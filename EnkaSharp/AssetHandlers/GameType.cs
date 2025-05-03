@@ -2,7 +2,7 @@ using System.ComponentModel;
 
 namespace EnkaSharp.AssetHandlers;
 
-public enum GameType
+internal enum GameType
 {
     [Description("Genshin Impact")] Genshin,
     [Description("Honkai Star Rail")] Hsr,

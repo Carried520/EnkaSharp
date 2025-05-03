@@ -2,12 +2,14 @@ using EnkaSharp.AssetHandlers;
 using EnkaSharp.AssetHandlers.Genshin;
 using EnkaSharp.Entities.Base.Abstractions;
 using EnkaSharp.Entities.Base.Raw;
+using EnkaSharp.Entities.Genshin;
+using EnkaSharp.Utils;
 
 namespace EnkaSharp.Mappers;
 
-public static class EquipmentMapper
+internal static class EquipmentMapper
 {
-    public static Weapon MapWeapon(EquipItem equipItem)
+    internal static Weapon MapWeapon(EquipItem equipItem)
     {
         if (equipItem.GetEquipmentType() is not EquipmentType.Weapon)
             throw new InvalidOperationException();
@@ -32,11 +34,9 @@ public static class EquipmentMapper
             Value = secondaryStatNode.StatValue
         };
 
-
-        string? name =
-            genshinAssetHandler.Data.TextMap?["en"][
-                equipItem.Flat.NameTextMapHash ?? throw new InvalidOperationException()];
-
+        string? name = genshinAssetHandler.GetDataFromTextMap(equipItem.Flat.NameTextMapHash ??
+                                                              throw new InvalidOperationException(
+                                                                  "Error parsing data"));
 
         return new Weapon
         {
@@ -48,11 +48,11 @@ public static class EquipmentMapper
             BaseAttack = baseAttack?.StatValue ?? 0,
             SecondaryStat = secondaryStat,
             Name = name ?? $"Genshin_Weapon_{equipItem.ItemId}",
-            IconUri = new Uri($"https://enka.network/ui/{equipItem.Flat.Icon}.png")
+            IconUri = UriConstants.GetAssetUri(equipItem.Flat.Icon),
         };
     }
 
-    public static Artifact MapArtifact(EquipItem equipItem)
+    internal static Artifact MapArtifact(EquipItem equipItem)
     {
         IAssetHandler handler = EnkaClient.Assets[GameType.Genshin];
         if (equipItem.GetEquipmentType() is not EquipmentType.Artifact)
@@ -62,13 +62,12 @@ public static class EquipmentMapper
         if (handler is not GenshinAssetHandler genshinAssetHandler)
             throw new InvalidCastException();
 
-        string setName =
-            genshinAssetHandler.Data.TextMap?["en"][
-                equipItem.Flat.SetNameTextMapHash ?? throw new InvalidOperationException()] ??
-            throw new InvalidOperationException();
+        string? setName = genshinAssetHandler.GetDataFromTextMap(equipItem.Flat.SetNameTextMapHash ??
+                                                                 throw new InvalidOperationException(
+                                                                     "Error parsing data"));
 
-        string name = genshinAssetHandler.Data.TextMap["en"][
-            equipItem.Flat.NameTextMapHash ?? throw new InvalidOperationException()];
+        string? name = genshinAssetHandler.GetDataFromTextMap(equipItem.Flat.NameTextMapHash ?? throw new
+            InvalidOperationException("Error parsing data"));
 
 
         Stat[] substats = equipItem.Flat.ReliquarySubstats.Select(subStat => new Stat
@@ -92,43 +91,7 @@ public static class EquipmentMapper
             SubStats = substats,
             SetName = setName,
             Name = name,
-            Uri = new Uri($"https://enka.network/ui/{equipItem.Flat.Icon}.png")
+            Uri = UriConstants.GetAssetUri(equipItem.Flat.Icon)
         };
     }
-}
-
-public class Stat
-{
-    public FightPropType StatType { get; set; }
-    public double Value { get; set; }
-}
-
-public class Weapon
-{
-    public string Name { get; set; } = null!;
-    public int ItemId { get; set; }
-
-    public int Level { get; set; }
-    public int Ascension { get; set; }
-    public int Refinement { get; set; }
-    public int Rarity { get; set; }
-    public double BaseAttack { get; set; }
-
-
-    public Stat SecondaryStat { get; set; } = null!;
-
-    public Uri? IconUri { get; set; }
-}
-
-public class Artifact
-{
-    public int ItemId { get; set; }
-    public int Level { get; set; }
-    public int Rarity { get; set; }
-
-    public Stat MainStat { get; set; } = null!;
-    public Stat[] SubStats { get; set; } = null!;
-    public string SetName { get; set; } = null!;
-    public string Name { get; set; } = null!;
-    public Uri? Uri { get; set; }
 }
