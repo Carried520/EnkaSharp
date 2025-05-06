@@ -24,7 +24,7 @@ public class Genshin
     
 
 
-    public async Task<EnkaGenshinData> GetUserAsync(long uid)
+    public async Task<EnkaGenshinData> GetGenshinDataAsync(long uid)
     {
         if (_cache.TryGetValue($"enka-user-uid-{uid}", out EnkaGenshinData? user))
         {
@@ -37,14 +37,14 @@ public class Genshin
         return enkaGenshinData;
     }
 
-    public async Task<EnkaInfo> GetUserInfoAsync(long uid)
+    public async Task<EnkaGenshinInfo> GetGenshinInfoAsync(long uid)
     {
-        if (_cache.TryGetValue($"enka-userinfo-uid-{uid}", out EnkaInfo? userInfo))
+        if (_cache.TryGetValue($"enka-userinfo-uid-{uid}", out EnkaGenshinInfo? userInfo))
         {
             return userInfo ?? throw new InvalidOperationException();
         }
 
-        var newUserInfo = await EnkaInfo.GetEnkaInfo(_httpClient, uid);
+        EnkaGenshinInfo newUserInfo = await EnkaGenshinInfo.GetEnkaInfo(_httpClient, uid);
         _cache.Set($"enka-userinfo-uid-{uid}", newUserInfo, TimeSpan.FromMinutes(5));
         return newUserInfo;
     }

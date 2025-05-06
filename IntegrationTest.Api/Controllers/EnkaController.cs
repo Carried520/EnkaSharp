@@ -20,15 +20,15 @@ namespace IntegrationTest.Api.Controllers
         [HttpGet("/userinfo")]
         public async Task<IActionResult> GetUserInfo(long uid)
         {
-            EnkaInfo info = await _enkaClient.Genshin.GetUserInfoAsync(uid);
-            return Ok(info);
+            EnkaGenshinInfo genshinInfo = await _enkaClient.Genshin.GetGenshinInfoAsync(uid);
+            return Ok(genshinInfo);
         }
         
         
         [HttpGet("/user")]
         public async Task<IActionResult> GetUser(long uid)
         {
-            EnkaGenshinData genshinData = await _enkaClient.Genshin.GetUserAsync(uid);
+            EnkaGenshinData genshinData = await _enkaClient.Genshin.GetGenshinDataAsync(uid);
             return Ok(genshinData);
         }
         

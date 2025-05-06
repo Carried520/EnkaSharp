@@ -20,4 +20,13 @@ public class Character
     public int AscensionLevel { get; set; }
 
     public Dictionary<FightPropType, double> BattleStats { get; set; }
+
+
+    public long AvatarId { get; set; }
+    public CharacterStats? CharacterStats { get; set; }
+    public int[] ConstellationIds { get; set; } = [];
+    public Talent[] Talents { get; set; } = [];
+
+    public Weapon? Weapon { get; set; }
+    public Artifact[] Artifacts { get; set; } = [];
 }

@@ -41,19 +41,9 @@ internal class RestGenshinData : IGenshinData
             throw new InvalidOperationException("Error getting character data");
 
 
-        var user = new EnkaGenshinData(PlayerInfo, AvatarInfoList, Ttl, Uid, Owner)
+        var user = new EnkaGenshinData(PlayerInfo, Ttl, Uid, Owner)
         {
-            Characters = AvatarInfoList.Select(info =>
-            {
-                Dictionary<PropMapNodeType, int> propMap = PropMapMapper.MapPropMap(info.PropMap);
-                Dictionary<FightPropType, double> battleMap = PropMapMapper.MapFightProps(info.FightPropMap);
-                CharacterData? textHash = genshinAssets.Data.Characters?[info.AvatarId.ToString()];
-                string? name =
-                    genshinAssets.Data.Localization?[EnkaClient.Config.Language][
-                        textHash?.NameTextMapHash.ToString() ?? throw new InvalidOperationException()];
-                return new Character(name ?? throw new InvalidOperationException(), propMap, battleMap);
-            }).ToArray(),
-            Stamina = firstPropMap is null ? 0 : firstPropMap[PropMapNodeType.Stamina] / 100
+            Characters = AvatarInfoList.Select(AvatarInfoMapper.MapAvatarInfo).ToArray()
         };
 
         return user;

@@ -9,7 +9,7 @@ namespace EnkaSharp.Mappers;
 
 internal static class PlayerInfoMapper
 {
-    internal static PlayerInfo MapPlayerInfo(RestPlayerInfo restPlayerInfo , string? uid)
+    internal static PlayerInfo MapPlayerInfo(RestPlayerInfo restPlayerInfo, string? uid)
     {
         return new PlayerInfo
         {
@@ -20,26 +20,22 @@ internal static class PlayerInfoMapper
             NameCardIconUri = MapNameCardId(restPlayerInfo.NameCardId),
             WorldLevel = restPlayerInfo.WorldLevel,
             AchievementCount = restPlayerInfo.AchievementCount,
-            TowerFloorIndex = restPlayerInfo.TowerFloorIndex,
-            TowerLevelIndex = restPlayerInfo.TowerLevelIndex,
-            ShowAvatarInfoList = MapShowAvatarInfoList(restPlayerInfo.ShowAvatarInfoList),
-            ShowNameCardIdUris = MapShowNameCardIdList(restPlayerInfo.ShowNameCardIdList),
+            Abyss = new AbyssInfo { Floor = restPlayerInfo.TowerFloorIndex, Chamber = restPlayerInfo.TowerLevelIndex },
+            ShowNameCardUris = MapShowNameCardIdList(restPlayerInfo.ShowNameCardIdList),
             ProfilePicture = restPlayerInfo.ProfilePicture,
             FetterCount = restPlayerInfo.FetterCount,
         };
     }
 
-    
-   
-    private static string?[] MapShowNameCardIdList(int[] nameCardIds)
+
+    private static Uri?[] MapShowNameCardIdList(int[] nameCardIds)
     {
         IAssetHandler handler = EnkaClient.Assets[GameType.Genshin];
         if (handler is not GenshinAssetHandler genshinAssetHandler)
             throw new InvalidCastException("Wrong handler configured for Genshin.");
-        
-        Dictionary<string, NameCard>? namecards = genshinAssetHandler.Data.NameCards;
-        return nameCardIds.Select(item => namecards?[item.ToString()].Icon).ToArray();
 
+        Dictionary<string, NameCard>? namecards = genshinAssetHandler.Data.NameCards;
+        return nameCardIds.Select(item => namecards?[item.ToString()].Icon).Select(UriConstants.GetAssetUri).ToArray();
     }
 
     private static Uri? MapNameCardId(int nameCardId)
@@ -53,7 +49,6 @@ internal static class PlayerInfoMapper
         if (icon == null) return null;
         Uri iconUri = UriConstants.GetAssetUri(icon);
         return iconUri;
-
     }
 
     private static AvatarInfoListItem[] MapShowAvatarInfoList(AvatarInfoListNode[] avatarInfoListNodes)
@@ -69,8 +64,10 @@ internal static class PlayerInfoMapper
                 CharacterData characterData = genshinAssetHandler.Data.Characters?[node.AvatarId.ToString()] ??
                                               throw new
                                                   InvalidOperationException();
-                string name = genshinAssetHandler.Data.Localization?[EnkaClient.Config.Language][characterData.NameTextMapHash.ToString()] ??
-                              throw new InvalidOperationException();
+                string name =
+                    genshinAssetHandler.Data.Localization?[EnkaClient.Config.Language][
+                        characterData.NameTextMapHash.ToString()] ??
+                    throw new InvalidOperationException();
 
                 return new AvatarInfoListItem
                 {
@@ -85,6 +82,12 @@ public class AvatarInfoListItem
     public string? Name { get; set; }
     public int Level { get; set; }
     public EnergyType EnergyType { get; set; }
+}
+
+public class AbyssInfo
+{
+    public int Floor { get; set; }
+    public int Chamber { get; set; }
 }
 
 public enum EnergyType

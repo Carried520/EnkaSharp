@@ -3,7 +3,7 @@ using EnkaSharp.Entities.Base.Raw;
 
 namespace EnkaSharp.Entities.Genshin.Raw;
 
-public class EnkaInfo
+public class EnkaGenshinInfo
 {
     public RestPlayerInfo? PlayerInfo { get; set; }
     public int? Ttl { get; set; }
@@ -11,14 +11,14 @@ public class EnkaInfo
     public Owner? Owner { get; set; }
 
 
-    internal static async Task<EnkaInfo> GetEnkaInfo(HttpClient client, long uid)
+    internal static async Task<EnkaGenshinInfo> GetEnkaInfo(HttpClient client, long uid)
     {
         HttpResponseMessage request = await client.GetAsync($"uid/{uid}?info");
         if (!request.IsSuccessStatusCode)
             EnkaClient.HandleError(request.StatusCode);
 
         await using Stream responseStream = await request.Content.ReadAsStreamAsync();
-        var info = await JsonSerializer.DeserializeAsync<EnkaInfo>(responseStream,
+        var info = await JsonSerializer.DeserializeAsync<EnkaGenshinInfo>(responseStream,
             JsonSettings.CamelCase);
         return info ?? throw new InvalidOperationException();
     }
