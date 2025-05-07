@@ -16,7 +16,7 @@ A wrapper over enka.network API , supporting Dependency Injection and MemoryCach
 var memoryCache = new MemoryCache(new MemoryCacheOptions());
 IEnkaClient client = EnkaProviderFactory.Create(new EnkaClientConfig { UserAgent = "Carried-Api-Test"} , memoryCache);
 // we have to call InitializeAsync() to populate assets before we can use EnkaClient
-await _client.InitializeAsync();
+await client.InitializeAsync();
 ```
 
 For Asp.Net and other Dependency Injection Scenarios:
