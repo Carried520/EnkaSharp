@@ -21,8 +21,11 @@ public class RestPlayerInfo
 
     public AvatarInfoListNode[] ShowAvatarInfoList { get; set; } = [];
     public int[] ShowNameCardIdList { get; set; } = [];
-    public ProfilePictureData? ProfilePicture { get; set; }
+    public ProfilePictureData ProfilePicture { get; set; } = null!;
 
+    public int TheaterActIndex { get; set; }
+    public int TheaterModeIndex { get; set; }
+    public int TheaterStarIndex { get; set; }
 
     [JsonPropertyName("fetterCount")] public int FetterCount { get; set; }
 }

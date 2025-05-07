@@ -1,8 +1,9 @@
 using EnkaSharp.AssetHandlers;
 using EnkaSharp.AssetHandlers.Genshin;
-using EnkaSharp.Entities.Base.Abstractions;
 using EnkaSharp.Entities.Base.Raw;
 using EnkaSharp.Entities.Genshin;
+using EnkaSharp.Entities.Genshin.Abstractions;
+using EnkaSharp.Entities.Genshin.Raw;
 using EnkaSharp.Utils;
 
 namespace EnkaSharp.Mappers;
@@ -13,14 +14,11 @@ internal static class EquipmentMapper
     {
         if (equipItem.GetEquipmentType() is not EquipmentType.Weapon)
             throw new InvalidOperationException();
-        if (equipItem.Weapon == null || equipItem.Flat?.WeaponStats == null)
+        if (equipItem.Weapon == null || equipItem.Flat?.WeaponStats == null || equipItem.Flat.ItemType == null)
             throw new InvalidOperationException();
 
-        IAssetHandler handler = EnkaClient.Assets[GameType.Genshin];
-        if (handler is not GenshinAssetHandler genshinAssetHandler)
-            throw new InvalidCastException();
-
-
+        var genshinAssetHandler = EnkaClient.GetAssets<GenshinAssetHandler>(GameType.Genshin);
+        
         BaseEquipStats? baseAttack =
             equipItem.Flat.WeaponStats.FirstOrDefault(flatStat =>
                 flatStat.AppendPropId == "FIGHT_PROP_BASE_ATTACK");
@@ -48,19 +46,19 @@ internal static class EquipmentMapper
             BaseAttack = baseAttack?.StatValue ?? 0,
             SecondaryStat = secondaryStat,
             Name = name ?? $"Genshin_Weapon_{equipItem.ItemId}",
-            IconUri = UriConstants.GetAssetUri(equipItem.Flat.Icon),
+            IconUri = UriConstants.GetAssetUri(equipItem.Flat.Icon)
         };
     }
 
     internal static Artifact MapArtifact(EquipItem equipItem)
     {
-        IAssetHandler handler = EnkaClient.Assets[GameType.Genshin];
+        var genshinAssetHandler = EnkaClient.GetAssets<GenshinAssetHandler>(GameType.Genshin);
         if (equipItem.GetEquipmentType() is not EquipmentType.Artifact)
             throw new InvalidOperationException();
-        if (equipItem.Reliquary == null || equipItem.Flat?.ReliquarySubstats == null)
+        if (equipItem.Reliquary == null || equipItem.Flat?.ReliquarySubstats == null ||
+            equipItem.Flat.EquipType == null)
             throw new InvalidOperationException();
-        if (handler is not GenshinAssetHandler genshinAssetHandler)
-            throw new InvalidCastException();
+
 
         string? setName = genshinAssetHandler.GetDataFromTextMap(equipItem.Flat.SetNameTextMapHash ??
                                                                  throw new InvalidOperationException(
@@ -91,7 +89,19 @@ internal static class EquipmentMapper
             SubStats = substats,
             SetName = setName,
             Name = name,
-            Uri = UriConstants.GetAssetUri(equipItem.Flat.Icon)
+            Uri = UriConstants.GetAssetUri(equipItem.Flat.Icon),
+            SlotType = GetArtifactSlotType(equipItem.Flat.EquipType)
         };
     }
+    
+
+    private static ArtifactSlotType GetArtifactSlotType(string value) => value switch
+    {
+        "EQUIP_BRACER" => ArtifactSlotType.Flower,
+        "EQUIP_NECKLACE" => ArtifactSlotType.Plume,
+        "EQUIP_SHOES" => ArtifactSlotType.Sands,
+        "EQUIP_RING" => ArtifactSlotType.Goblet,
+        "EQUIP_DRESS" => ArtifactSlotType.Circlet,
+        _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
+    };
 }

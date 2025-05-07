@@ -1,4 +1,4 @@
-namespace EnkaSharp.Entities.Base.Abstractions;
+namespace EnkaSharp.Entities.Genshin.Abstractions;
 
 internal static class FightProps
 {

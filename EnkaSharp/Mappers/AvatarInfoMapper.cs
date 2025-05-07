@@ -1,9 +1,9 @@
 using EnkaSharp.AssetHandlers;
 using EnkaSharp.AssetHandlers.Genshin;
-using EnkaSharp.Entities.Base.Abstractions;
 using EnkaSharp.Entities.Base.Raw;
 using EnkaSharp.Entities.Genshin;
 using EnkaSharp.Entities.Genshin.Abstractions;
+using EnkaSharp.Entities.Genshin.Raw;
 using EnkaSharp.Utils;
 
 namespace EnkaSharp.Mappers;
@@ -12,9 +12,7 @@ internal static class AvatarInfoMapper
 {
     internal static Character MapAvatarInfo(RestAvatarInfo restAvatarInfo)
     {
-        IAssetHandler handler = EnkaClient.Assets[GameType.Genshin];
-        if (handler is not GenshinAssetHandler genshinAssetHandler)
-            throw new InvalidCastException("Wrongly registered genshin handler");
+        var genshinAssetHandler = EnkaClient.GetAssets<GenshinAssetHandler>(GameType.Genshin);
 
         Dictionary<PropMapNodeType, int> propMap = PropMapMapper.MapPropMap(restAvatarInfo.PropMap);
         Dictionary<FightPropType, double> battleMap = PropMapMapper.MapFightProps(restAvatarInfo.FightPropMap);
@@ -27,13 +25,13 @@ internal static class AvatarInfoMapper
         {
             AvatarId = restAvatarInfo.AvatarId,
             CharacterStats = MapPropMap(restAvatarInfo.PropMap),
-            ConstellationIds = restAvatarInfo.TalentIdList,
             Talents = MapTalents(restAvatarInfo.AvatarId,
                 restAvatarInfo.SkillDepotId,
                 restAvatarInfo.SkillLevelMap,
                 restAvatarInfo.ProudSkillExtraLevelMap),
             Weapon = MapWeapon(restAvatarInfo.EquipList),
-            Artifacts = MapArtifacts(restAvatarInfo.EquipList)
+            Artifacts = MapArtifacts(restAvatarInfo.EquipList),
+            Constellations = ConstellationMapper.MapConstellations(restAvatarInfo.TalentIdList)
         };
     }
 
@@ -67,9 +65,7 @@ internal static class AvatarInfoMapper
         if (skillLevelMap.Count == 0)
             return talents.ToArray();
 
-        IAssetHandler handler = EnkaClient.Assets[GameType.Genshin];
-        if (handler is not GenshinAssetHandler genshinAssetHandler)
-            throw new InvalidCastException("Wrong handler initialized for Genshin");
+        var genshinAssetHandler = EnkaClient.GetAssets<GenshinAssetHandler>(GameType.Genshin);
 
 
         foreach ((string? key, int baseLevel) in skillLevelMap)

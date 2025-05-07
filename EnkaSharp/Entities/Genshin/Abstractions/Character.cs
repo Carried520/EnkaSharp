@@ -1,5 +1,3 @@
-using EnkaSharp.Entities.Base.Abstractions;
-
 namespace EnkaSharp.Entities.Genshin.Abstractions;
 
 public class Character
@@ -14,19 +12,19 @@ public class Character
         BattleStats = battleStats;
     }
 
-    public string Name { get; set; }
-    public int Level { get; set; }
-    public int Experience { get; set; }
-    public int AscensionLevel { get; set; }
+    public string Name { get; internal set; }
+    public int Level { get; internal set; }
+    public int Experience { get; internal set; }
+    public int AscensionLevel { get; internal set; }
 
-    public Dictionary<FightPropType, double> BattleStats { get; set; }
+    public Dictionary<FightPropType, double> BattleStats { get; internal set; }
 
 
-    public long AvatarId { get; set; }
-    public CharacterStats? CharacterStats { get; set; }
-    public int[] ConstellationIds { get; set; } = [];
-    public Talent[] Talents { get; set; } = [];
+    public long AvatarId { get; internal set; }
+    public CharacterStats? CharacterStats { get; internal set; }
+    public Talent[] Talents { get; internal set; } = [];
 
-    public Weapon? Weapon { get; set; }
-    public Artifact[] Artifacts { get; set; } = [];
+    public Weapon? Weapon { get; internal set; }
+    public Artifact[] Artifacts { get; internal set; } = [];
+    public Constellation[] Constellations { get; internal set; } = [];
 }

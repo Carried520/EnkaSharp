@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace EnkaSharp.Entities.Base.Raw;
+namespace EnkaSharp.Entities.Genshin.Raw;
 
 public class RestAvatarInfo
 {
@@ -17,6 +17,9 @@ public class RestAvatarInfo
     public Dictionary<string, int> ProudSkillExtraLevelMap { get; set; } = [];
     public EquipItem[] EquipList { get; set; } = [];
     public FetterInfo? FetterInfo { get; set; }
+    
+    
+    
 }
 
 public class PropMapNode
@@ -35,6 +38,7 @@ public class EquipItem
     public RestWeapon? Weapon { get; set; }
 
     public FlatStats? Flat { get; set; }
+    
 
     public EquipmentType GetEquipmentType()
     {
@@ -73,7 +77,6 @@ public enum EquipmentType
 
 public class FlatStats
 {
-    public string? ItemType { get; init; }
     
     public int? SetId { get; init; }
     
@@ -88,6 +91,9 @@ public class FlatStats
     public string? Icon { get; set; }
     
     public MainProp? ReliquaryMainstat { get; set; }
+    
+    public string? ItemType { get; set; }
+    public string? EquipType { get; set; }
 }
 
 public class BaseEquipStats
