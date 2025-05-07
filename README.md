@@ -1,5 +1,6 @@
-# Enka.Client
-
+# EnkaSharp
+## About
+A wrapper over enka.network API , supporting Dependency Injection and MemoryCache.
 ## Game support
 
 | Game              | Status        |
