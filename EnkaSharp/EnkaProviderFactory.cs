@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Enka.Client;
+namespace EnkaSharp;
 
 /// <summary>
 /// EnkaClient provider for Applications that don't use Dependency Injection.
@@ -15,8 +15,9 @@ public static class EnkaProviderFactory
     /// <summary>
     /// Creates an instance of IEnkaClient.
     /// </summary>
-    /// <param name="userAgent">User Agent to use for HTTP requests.</param>
+    /// <param name="config"><see cref="EnkaClientConfig"/></param>
     /// <param name="cacheProvider">Instance of IMemoryCache to be passed as caching provider.</param>
     /// <returns> <see cref="IEnkaClient"/> </returns>
-    public static IEnkaClient Create(string userAgent , IMemoryCache cacheProvider) => new EnkaClient(SharedClient, userAgent , cacheProvider);
+    public static IEnkaClient Create(EnkaClientConfig config, IMemoryCache cacheProvider) =>
+        new EnkaClient(SharedClient, config, cacheProvider);
 }

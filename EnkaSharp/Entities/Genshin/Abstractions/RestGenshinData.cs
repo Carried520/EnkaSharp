@@ -1,0 +1,50 @@
+using System.Text.Json;
+using EnkaSharp.AssetHandlers;
+using EnkaSharp.AssetHandlers.Genshin;
+using EnkaSharp.Entities.Base.Raw;
+using EnkaSharp.Entities.Genshin.Raw;
+using EnkaSharp.Mappers;
+
+namespace EnkaSharp.Entities.Genshin.Abstractions;
+
+internal class RestGenshinData : IGenshinData
+{
+    public RestPlayerInfo? PlayerInfo { get; set; }
+    public RestAvatarInfo[] AvatarInfoList { get; set; } = [];
+    public int Ttl { get; set; }
+    public string? Uid { get; set; }
+    public Owner? Owner { get; set; }
+
+    internal static async Task<RestGenshinData> GetUserAsync(HttpClient client, long uid)
+    {
+        HttpResponseMessage request = await client.GetAsync($"uid/{uid}");
+        if (!request.IsSuccessStatusCode)
+            EnkaClient.HandleError(request.StatusCode);
+
+        await using Stream responseStream = await request.Content.ReadAsStreamAsync();
+        var user = await JsonSerializer.DeserializeAsync<RestGenshinData>(responseStream,
+            JsonSettings.CamelCase);
+        return user ?? throw new InvalidOperationException();
+    }
+
+    internal EnkaGenshinData ToGenshinData()
+    {
+        Dictionary<PropMapNodeType, int>[] propMaps =
+            AvatarInfoList.Select(info => PropMapMapper.MapPropMap(info.PropMap)).ToArray();
+        Dictionary<PropMapNodeType, int>? firstPropMap = propMaps.FirstOrDefault();
+
+
+        if (EnkaClient.Assets[GameType.Genshin] is not GenshinAssetHandler genshinAssets)
+            throw new InvalidCastException("Error when getting genshin handler");
+        if (genshinAssets.Data.Localization is null || genshinAssets.Data.Characters is null)
+            throw new InvalidOperationException("Error getting character data");
+
+
+        var user = new EnkaGenshinData(PlayerInfo, Ttl, Uid, Owner)
+        {
+            Characters = AvatarInfoList.Select(AvatarInfoMapper.MapAvatarInfo).ToArray()
+        };
+
+        return user;
+    }
+}

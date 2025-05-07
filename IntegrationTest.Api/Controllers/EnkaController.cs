@@ -1,5 +1,7 @@
-using Enka.Client;
-using Enka.Client.Entities;
+
+using EnkaSharp;
+using EnkaSharp.Entities.Genshin.Abstractions;
+using EnkaSharp.Entities.Genshin.Raw;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntegrationTest.Api.Controllers
@@ -15,19 +17,21 @@ namespace IntegrationTest.Api.Controllers
             _enkaClient = enkaClient;
         }
 
-        [HttpGet("/hoyos")]
-        public async Task<IActionResult> Get(string userName)
+        [HttpGet("/userinfo")]
+        public async Task<IActionResult> GetUserInfo(long uid)
         {
-            Hoyos user = await _enkaClient.User.GetHoyosAsync(userName);
-            return Ok(user);
+            EnkaGenshinInfo genshinInfo = await _enkaClient.Genshin.GetGenshinInfoAsync(uid);
+            return Ok(genshinInfo);
         }
         
-        [HttpGet("/snapshot")]
-        public async Task<IActionResult> GetSnapshot(string userName)
+        
+        [HttpGet("/user")]
+        public async Task<IActionResult> GetUser(long uid)
         {
-            Snapshot user = await _enkaClient.User.GetSnapshotAsync(userName);
-            return Ok(user);
+            EnkaGenshinData genshinData = await _enkaClient.Genshin.GetGenshinDataAsync(uid);
+            return Ok(genshinData);
         }
+        
         
     }
 }

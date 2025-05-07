@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Enka.Client;
+namespace EnkaSharp;
 
 /// <summary>
 /// Provides extensions to help register EnkaClient.
@@ -13,15 +13,15 @@ public static class EnkaDependencyInjectionExtensions
     /// Note : Requires MemoryCache to be added to Container as well.
     /// </summary>
     /// <param name="serviceCollection">The <see cref="IServiceCollection"/>.</param>
-    /// <param name="userAgent">User Agent to use for HTTP requests.</param>
+    /// <param name="config"><see cref="EnkaClientConfig"/></param>
     /// <returns>An <see cref="IServiceCollection"/> to configure more services. </returns>
-    public static IServiceCollection AddEnkaClient(this IServiceCollection serviceCollection, string userAgent)
+    public static IServiceCollection AddEnkaClient(this IServiceCollection serviceCollection, EnkaClientConfig config)
     {
         serviceCollection.AddHttpClient<EnkaClient>()
             .AddTypedClient<IEnkaClient>((client, sp) =>
             {
-                IMemoryCache cache = sp.GetRequiredService<IMemoryCache>();
-                return new EnkaClient(client, userAgent , cache);
+                var cache = sp.GetRequiredService<IMemoryCache>();
+                return new EnkaClient(client, config , cache);
             });
         return serviceCollection;
     }
