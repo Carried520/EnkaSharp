@@ -1,5 +1,4 @@
 using System.Text.Json;
-using EnkaSharp.Entities.Base.Abstractions;
 using EnkaSharp.Entities.Base.Raw;
 using EnkaSharp.Entities.Genshin.Abstractions;
 using EnkaSharp.Entities.Genshin.Raw;

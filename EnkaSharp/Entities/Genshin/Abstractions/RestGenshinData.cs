@@ -1,7 +1,6 @@
 using System.Text.Json;
 using EnkaSharp.AssetHandlers;
 using EnkaSharp.AssetHandlers.Genshin;
-using EnkaSharp.Entities.Base.Abstractions;
 using EnkaSharp.Entities.Base.Raw;
 using EnkaSharp.Entities.Genshin.Raw;
 using EnkaSharp.Mappers;

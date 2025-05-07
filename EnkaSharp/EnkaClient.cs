@@ -34,17 +34,17 @@ public sealed class EnkaClient : IEnkaClient
         switch ((int)statusCode)
         {
             case 400:
-                throw new InvalidUidException();
+                throw new InvalidUidException("Uid was in invalid format");
             case 404:
-                throw new PlayerNotFoundException();
+                throw new PlayerNotFoundException("Player not found");
             case 424:
-                throw new ApiBrokenException();
+                throw new ApiBrokenException("Game maintenance / Api is broken after update");
             case 429:
-                throw new RateLimitException();
+                throw new RateLimitException("Ratelimited");
             case 500:
-                throw new InternalServerErrorException();
+                throw new InternalServerErrorException("Internal Server Error");
             case 503:
-                throw new ApiBrokenException();
+                throw new ApiBrokenException("Api is broken due to developer's fault");
             default:
                 return;
         }
@@ -66,6 +66,14 @@ public sealed class EnkaClient : IEnkaClient
     internal static bool IsInitialized { get; set; } = false;
     internal static AssetDispatcher Assets { get; set; } = new();
 
+
+    internal static T GetAssets<T>(GameType gameType) where T : IAssetHandler
+    {
+        IAssetHandler handler = Assets[gameType];
+        if (handler is not T gameAssetHandler)
+            throw new InvalidCastException("Wrong handler registered for the game");
+        return gameAssetHandler;
+    }
 
     public EnkaClient ShallowCopy()
     {

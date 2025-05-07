@@ -1,4 +1,3 @@
-using EnkaSharp.Entities.Base.Abstractions;
 using EnkaSharp.Entities.Base.Raw;
 using EnkaSharp.Entities.Genshin.Raw;
 using EnkaSharp.Mappers;
@@ -15,8 +14,8 @@ public class EnkaGenshinData : IGenshinData
         Owner = owner;
     }
 
-    public PlayerInfo Player { get; set; }
+    public PlayerInfo Player { get; internal set; }
     internal int Ttl { get; set; }
     public Owner? Owner { get; set; }
-    public Character[] Characters { get; set; } = [];
+    public Character[] Characters { get; internal set; } = [];
 }

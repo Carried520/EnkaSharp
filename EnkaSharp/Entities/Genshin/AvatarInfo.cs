@@ -1,18 +1,4 @@
-using EnkaSharp.Entities.Base.Abstractions;
-
 namespace EnkaSharp.Entities.Genshin;
-
-public class AvatarInfo
-{
-    public long AvatarId { get; set; }
-    public CharacterStats? AvatarStats { get; set; }
-    public Dictionary<FightPropType, double> FightPropMap { get; set; } = [];
-    public int[] ConstellationIds { get; set; } = [];
-    public Talent[] Talents { get; set; } = [];
-
-    public Weapon? Weapon { get; set; }
-    public Artifact[] Artifacts { get; set; } = [];
-}
 
 public class CharacterStats
 {

@@ -11,10 +11,16 @@ public class GenshinAssetData
     public Dictionary<string, TalentData>? Talents { get; set; } = [];
 
     public Dictionary<string, Dictionary<string, string>>? TextMap { get; set; } = [];
+
+    public Dictionary<string, ConstellationData>? Constellations { get; set; } = [];
 }
 
+public class ConstellationData
+{
+    public long NameTextMapHash { get; set; }
 
-
+    public string Icon { get; set; } = null!;
+}
 
 public class TalentData
 {

@@ -22,7 +22,7 @@ internal class GenshinAssetHandler : IAssetHandler
         Dictionary<string, string>? localizedTextMap = Data.TextMap?[EnkaClient.Config.Language];
         return localizedTextMap?[nameTextMapHash];
     }
-    
+
     private async Task DownloadGenshinAssetsAsync()
     {
         Data.Localization =
@@ -35,7 +35,11 @@ internal class GenshinAssetHandler : IAssetHandler
         Data.TextMap =
             await HttpClient.GetFromJsonAsync<Dictionary<string, Dictionary<string, string>>>(
                 "https://raw.githubusercontent.com/seriaati/enka-py-assets/main/data/text_map.json");
-        Data.Talents = await HttpClient.GetFromJsonAsync<Dictionary<string , TalentData>>(
+        Data.Talents = await HttpClient.GetFromJsonAsync<Dictionary<string, TalentData>>(
             "https://raw.githubusercontent.com/seriaati/enka-py-assets/main/data/talents.json");
+        Data.Constellations =
+            await HttpClient.GetFromJsonAsync<Dictionary<string, ConstellationData>>(
+                "https://raw.githubusercontent.com/seriaati/enka-py-assets/main/data/consts.json");
+        
     }
 }
