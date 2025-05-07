@@ -16,7 +16,7 @@ jobs:
       with:
         dotnet-version: '9.0.x' 
     - name: Restore
-      run: dotnet restore EnkaSharp/EnkaSharp.csproj -c Release
+      run: dotnet restore EnkaSharp/EnkaSharp.csproj
     - name: Build
       run: dotnet build EnkaSharp/EnkaSharp.csproj -c Release
   
