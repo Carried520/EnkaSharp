@@ -44,6 +44,8 @@ public class StartupService : BackgroundService
 ```
 
 ## Using Client
+```csharp
 // provide uid - your hoyoverse uid
 EnkaGenshinData genshinData = await _enkaClient.Genshin.GetGenshinDataAsync(uid);
 // access properties freely
+```
