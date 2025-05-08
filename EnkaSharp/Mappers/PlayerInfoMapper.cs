@@ -68,31 +68,6 @@ internal static class PlayerInfoMapper
         Uri iconUri = UriConstants.GetAssetUri(icon);
         return iconUri;
     }
-
-    private static AvatarInfoListItem[] MapShowAvatarInfoList(AvatarInfoListNode[] avatarInfoListNodes)
-    {
-        IAssetHandler handler = EnkaClient.Assets[GameType.Genshin];
-        if (handler is not GenshinAssetHandler genshinAssetHandler)
-            throw new InvalidCastException("Wrong handler configured for Genshin.");
-
-
-        return avatarInfoListNodes.Where(node => Enum.IsDefined(typeof(EnergyType), node.EnergyType))
-            .Select(node =>
-            {
-                CharacterData characterData = genshinAssetHandler.Data.Characters?[node.AvatarId.ToString()] ??
-                                              throw new
-                                                  InvalidOperationException();
-                string name =
-                    genshinAssetHandler.Data.Localization?[EnkaClient.Config.Language][
-                        characterData.NameTextMapHash.ToString()] ??
-                    throw new InvalidOperationException();
-
-                return new AvatarInfoListItem
-                {
-                    Name = name, EnergyType = (EnergyType)node.EnergyType, Level = node.Level
-                };
-            }).ToArray();
-    }
 }
 
 public class AvatarInfoListItem
