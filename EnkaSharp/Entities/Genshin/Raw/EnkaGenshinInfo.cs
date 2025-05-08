@@ -11,15 +11,15 @@ public class EnkaGenshinInfo
     public Owner? Owner { get; set; }
 
 
-    internal static async Task<EnkaGenshinInfo> GetEnkaInfo(HttpClient client, long uid)
+    internal static async Task<EnkaGenshinInfo> GetEnkaInfo(HttpClient client, long uid , CancellationToken cancellationToken)
     {
-        HttpResponseMessage request = await client.GetAsync($"uid/{uid}?info");
+        HttpResponseMessage request = await client.GetAsync($"uid/{uid}?info" , cancellationToken);
         if (!request.IsSuccessStatusCode)
             EnkaClient.HandleError(request.StatusCode);
 
-        await using Stream responseStream = await request.Content.ReadAsStreamAsync();
+        await using Stream responseStream = await request.Content.ReadAsStreamAsync(cancellationToken);
         var info = await JsonSerializer.DeserializeAsync<EnkaGenshinInfo>(responseStream,
-            JsonSettings.CamelCase);
+            JsonSettings.CamelCase ,  cancellationToken);
         return info ?? throw new InvalidOperationException();
     }
 }

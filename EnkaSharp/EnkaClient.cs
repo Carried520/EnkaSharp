@@ -61,10 +61,10 @@ public sealed class EnkaClient : IEnkaClient
     /// </summary>
     public Genshin Genshin { get; }
 
-    internal static EnkaClientConfig Config { get; set; } = new();
+    internal static EnkaClientConfig Config { get; private set; } = new();
 
-    internal static bool IsInitialized { get; set; } = false;
-    internal static AssetDispatcher Assets { get; set; } = new();
+    internal static bool IsInitialized { get; private set; }
+    internal static AssetDispatcher Assets { get; } = new();
 
 
     internal static T GetAssets<T>(GameType gameType) where T : IAssetHandler
