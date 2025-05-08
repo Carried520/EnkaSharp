@@ -16,12 +16,7 @@ jobs:
       with:
         dotnet-version: '9.0.x' 
     - name: Build
-      run: dotnet build EnkaSharp/EnkaSharp.csproj -c Release
-  
-
-
-
-    
+      run: dotnet build EnkaSharp/EnkaSharp.csproj -c Release  
     - name: Pack nugets
       run: dotnet pack EnkaSharp/EnkaSharp.csproj -c Release --no-build --output .
     - name: Push to NuGet
