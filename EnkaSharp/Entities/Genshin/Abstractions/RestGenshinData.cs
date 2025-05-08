@@ -15,15 +15,15 @@ internal class RestGenshinData : IGenshinData
     public string? Uid { get; set; }
     public Owner? Owner { get; set; }
 
-    internal static async Task<RestGenshinData> GetUserAsync(HttpClient client, long uid)
+    internal static async Task<RestGenshinData> GetUserAsync(HttpClient client, long uid , CancellationToken cancellationToken)
     {
-        HttpResponseMessage request = await client.GetAsync($"uid/{uid}");
+        HttpResponseMessage request = await client.GetAsync($"uid/{uid}" , cancellationToken);
         if (!request.IsSuccessStatusCode)
             EnkaClient.HandleError(request.StatusCode);
 
-        await using Stream responseStream = await request.Content.ReadAsStreamAsync();
+        await using Stream responseStream = await request.Content.ReadAsStreamAsync(cancellationToken);
         var user = await JsonSerializer.DeserializeAsync<RestGenshinData>(responseStream,
-            JsonSettings.CamelCase);
+            JsonSettings.CamelCase , cancellationToken);
         return user ?? throw new InvalidOperationException();
     }
 

@@ -1,15 +1,16 @@
 # EnkaSharp
 ## About
 A wrapper over enka.network API , supporting Dependency Injection and MemoryCache.
+
 ## Installation (Nuget)
 [EnkaSharp](https://www.nuget.org/packages/EnkaSharp)
 ## Game support
 
-| Game              | Status        |
-| ----------------- | -------------- 
-| Genshin Impact    | ✅ Ready | 
-| Honkai: Star Rail | ✖ Not Implemented|  
-| Zenless Zone Zero |  ✖ Not Implemented |
+| Game              | Status            |
+|-------------------|-------------------|
+| Genshin Impact    | ✅ Ready           | 
+| Honkai: Star Rail | ✖ Not Implemented |  
+| Zenless Zone Zero | ✖ Not Implemented |
 
 ## Creating Client
 ```csharp
