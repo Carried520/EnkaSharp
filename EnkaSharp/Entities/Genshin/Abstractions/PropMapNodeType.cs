@@ -1,5 +1,8 @@
 namespace EnkaSharp.Entities.Genshin.Abstractions;
 
+/// <summary>
+/// Enum that represents non-battle stats for character in genshin.
+/// </summary>
 public enum PropMapNodeType
 {
     Experience = 1001,

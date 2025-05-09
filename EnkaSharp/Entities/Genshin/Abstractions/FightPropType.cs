@@ -40,6 +40,9 @@ internal static class FightProps
     };
 }
 
+/// <summary>
+/// Enum representing various battle stats for Genshin character
+/// </summary>
 public enum FightPropType
 {
     None = 0,

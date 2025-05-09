@@ -15,27 +15,22 @@ internal class RestGenshinData : IGenshinData
     public string? Uid { get; set; }
     public Owner? Owner { get; set; }
 
-    internal static async Task<RestGenshinData> GetUserAsync(HttpClient client, long uid , CancellationToken cancellationToken)
+    internal static async Task<RestGenshinData> GetUserAsync(HttpClient client, long uid,
+        CancellationToken cancellationToken)
     {
-        HttpResponseMessage request = await client.GetAsync($"uid/{uid}" , cancellationToken);
+        HttpResponseMessage request = await client.GetAsync($"uid/{uid}", cancellationToken);
         if (!request.IsSuccessStatusCode)
             EnkaClient.HandleError(request.StatusCode);
 
         await using Stream responseStream = await request.Content.ReadAsStreamAsync(cancellationToken);
         var user = await JsonSerializer.DeserializeAsync<RestGenshinData>(responseStream,
-            JsonSettings.CamelCase , cancellationToken);
+            JsonSettings.CamelCase, cancellationToken);
         return user ?? throw new InvalidOperationException();
     }
 
     internal EnkaGenshinData ToGenshinData()
     {
-        Dictionary<PropMapNodeType, int>[] propMaps =
-            AvatarInfoList.Select(info => PropMapMapper.MapPropMap(info.PropMap)).ToArray();
-        Dictionary<PropMapNodeType, int>? firstPropMap = propMaps.FirstOrDefault();
-
-
-        if (EnkaClient.Assets[GameType.Genshin] is not GenshinAssetHandler genshinAssets)
-            throw new InvalidCastException("Error when getting genshin handler");
+        var genshinAssets = EnkaClient.GetAssets<GenshinAssetHandler>(GameType.Genshin);
         if (genshinAssets.Data.Localization is null || genshinAssets.Data.Characters is null)
             throw new InvalidOperationException("Error getting character data");
 

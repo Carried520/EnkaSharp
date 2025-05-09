@@ -22,6 +22,14 @@ public class Genshin
     }
 
 
+    /// <summary>
+    /// Returns full genshin data of enka user.
+    /// </summary>
+    /// <param name="uid">Uid of user to be searched.</param>
+    /// <param name="cancellationToken">Cancellation token to handle cancellation.</param>
+    /// <returns><see cref="EnkaGenshinData"/></returns>
+    /// <exception cref="InvalidOperationException">In case <see cref="EnkaGenshinData"/> is null.</exception>
+    /// <exception cref="OperationCanceledException">If cancellation is requested with <see cref="CancellationToken"/>.</exception>
     public async Task<EnkaGenshinData> GetGenshinDataAsync(long uid, CancellationToken cancellationToken = default)
     {
         if (_cache.TryGetValue($"enka-user-uid-{uid}", out EnkaGenshinData? user))
@@ -37,6 +45,14 @@ public class Genshin
         return enkaGenshinData;
     }
 
+    /// <summary>
+    /// Gets only <see cref="PlayerInfo"/> from enka.network API.
+    /// </summary>
+    /// <param name="uid">Uid of user to be searched.</param>
+    /// <param name="cancellationToken">Cancellation token to handle cancellation.</param>
+    /// <returns><see cref="EnkaGenshinInfo"/></returns>
+    /// <exception cref="InvalidOperationException">In case <see cref="EnkaGenshinInfo"/> is null.</exception>
+    /// <exception cref="OperationCanceledException">If cancellation is requested with <see cref="CancellationToken"/>.</exception>
     public async Task<EnkaGenshinInfo> GetGenshinInfoAsync(long uid, CancellationToken cancellationToken = default)
     {
         if (_cache.TryGetValue($"enka-userinfo-uid-{uid}", out EnkaGenshinInfo? userInfo))
