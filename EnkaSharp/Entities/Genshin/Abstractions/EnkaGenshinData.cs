@@ -4,6 +4,9 @@ using EnkaSharp.Mappers;
 
 namespace EnkaSharp.Entities.Genshin.Abstractions;
 
+/// <summary>
+/// Wrapper for data from enka.network API
+/// </summary>
 public class EnkaGenshinData : IGenshinData
 {
     public EnkaGenshinData(RestPlayerInfo? playerInfo, int ttl, string? uid,

@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Text.Json;
 using EnkaSharp.AssetHandlers;
 using EnkaSharp.AssetHandlers.Genshin;
 using EnkaSharp.Entities.Genshin;
@@ -40,7 +39,7 @@ public sealed class EnkaClient : IEnkaClient
             case 424:
                 throw new ApiBrokenException("Game maintenance / Api is broken after update");
             case 429:
-                throw new RateLimitException("Ratelimited");
+                throw new RateLimitException("Rate limited");
             case 500:
                 throw new InternalServerErrorException("Internal Server Error");
             case 503:

@@ -3,56 +3,57 @@ using EnkaSharp.Entities.Genshin.Abstractions;
 
 namespace EnkaSharp.Entities.Genshin;
 
+/// <summary>
+/// Represents Stat for Artifacts and Weapons
+/// </summary>
 public class Stat
 {
-    public FightPropType StatType { get; set; }
-    public double Value { get; set; }
+    public FightPropType StatType { get; internal set; }
+    public double Value { get; internal set; }
 }
 
+/// <summary>
+/// Represents an abstraction over weapon
+/// </summary>
 public class Weapon
 {
-    public string Name { get; set; } = null!;
-    public int ItemId { get; set; }
+    public string Name { get; internal set; } = null!;
+    public int ItemId { get; internal set; }
 
-    public int Level { get; set; }
-    public int Ascension { get; set; }
-    public int Refinement { get; set; }
-    public int Rarity { get; set; }
-    public double BaseAttack { get; set; }
+    public int Level { get; internal set; }
+    public int Ascension { get; internal set; }
+    public int Refinement { get; internal set; }
+    public int Rarity { get; internal set; }
+    public double BaseAttack { get; internal set; }
 
 
-    public Stat SecondaryStat { get; set; } = null!;
+    public Stat SecondaryStat { get; internal set; } = null!;
 
-    public Uri? IconUri { get; set; }
-
-    public WeaponType WeaponType { get; set; }
+    public Uri? IconUri { get; internal set; }
+    
 }
 
-public enum WeaponType
-{
-    Unknown = 0,
-    [Description("WEAPON_SWORD_ONE_HAND")] Sword,
-    [Description("WEAPON_CLAYMORE")] Claymore,
-    [Description("WEAPON_POLE")] Polearm,
-    [Description("WEAPON_BOW")] Bow,
-    [Description("WEAPON_CATALYST")] Catalyst
-}
-
+/// <summary>
+/// Represents an abstraction over Artifact
+/// </summary>
 public class Artifact
 {
-    public int ItemId { get; set; }
-    public int Level { get; set; }
-    public int Rarity { get; set; }
+    public int ItemId { get; internal set; }
+    public int Level { get; internal set; }
+    public int Rarity { get; internal set; }
 
-    public Stat MainStat { get; set; } = null!;
-    public Stat[] SubStats { get; set; } = null!;
-    public string? SetName { get; set; } = null!;
-    public string? Name { get; set; } = null!;
-    public Uri? Uri { get; set; }
+    public Stat MainStat { get; internal set; } = null!;
+    public Stat[] SubStats { get; internal set; } = null!;
+    public string? SetName { get; internal set; } = null!;
+    public string? Name { get; internal set; } = null!;
+    public Uri? Uri { get; internal set; }
 
-    public ArtifactSlotType SlotType { get; set; }
+    public ArtifactSlotType SlotType { get; internal set; }
 }
 
+/// <summary>
+/// Represents type of Artifact
+/// </summary>
 public enum ArtifactSlotType
 {
     Unknown = 0,
