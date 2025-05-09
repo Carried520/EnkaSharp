@@ -7,12 +7,12 @@ using EnkaSharp.Mappers;
 
 namespace EnkaSharp.Entities.Genshin.Abstractions;
 
-internal class RestGenshinData : IGenshinData
+public class RestGenshinData : IGenshinData
 {
-    internal RestPlayerInfo? PlayerInfo { get; set; }
-    internal RestAvatarInfo[] AvatarInfoList { get; set; } = [];
-    internal int Ttl { get; set; }
-    internal string? Uid { get; set; }
+    public RestPlayerInfo? PlayerInfo { get; set; }
+    public RestAvatarInfo[] AvatarInfoList { get; set; } = [];
+    public int Ttl { get; set; }
+    public string? Uid { get; set; }
     public Owner? Owner { get; set; }
 
     internal static async Task<RestGenshinData> GetUserAsync(HttpClient client, long uid,

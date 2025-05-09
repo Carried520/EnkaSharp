@@ -4,5 +4,5 @@ namespace EnkaSharp.Entities.Genshin.Abstractions;
 
 public interface IGenshinData
 {
-    public Owner? Owner { get; internal set; }
+    public Owner? Owner { get; set; }
 }
