@@ -1,22 +1,28 @@
 namespace EnkaSharp.Entities.Genshin;
 
+/// <summary>
+/// Wrapper to strongly represent non-battle Character Stats
+/// </summary>
 public class CharacterStats
 {
-    public int Experience { get; set; }
-    public int AscensionLevel { get; set; }
-    public int Satiation { get; set; }
-    public int SatationPenalty { get; set; }
-    public int Level { get; set; }
-    public int Stamina { get; set; }
-    public int DiveStamina { get; set; }
+    public int Experience { get; internal set; }
+    public int AscensionLevel { get; internal set; }
+    public int Satiation { get; internal set; }
+    public int SatationPenalty { get; internal set; }
+    public int Level { get; internal set; }
+    public int Stamina { get; internal set; }
+    public int DiveStamina { get; internal set; }
 }
 
+/// <summary>
+/// Represents abstraction over Talent.
+/// </summary>
 public class Talent
 {
-    public int Id { get; set; }
-    public string? Name { get; set; }
-    public int Level { get; set; }
-    public int BaseLevel { get; set; }
-    public int ExtraLevel { get; set; }
-    public Uri? IconUri { get; set; }
+    public int Id { get; internal set; }
+    public string? Name { get; internal set; }
+    public int Level { get; internal set; }
+    public int BaseLevel { get; internal set; }
+    public int ExtraLevel { get; internal set; }
+    public Uri? IconUri { get; internal set; }
 }

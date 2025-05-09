@@ -3,6 +3,9 @@ using EnkaSharp.Mappers;
 
 namespace EnkaSharp.Entities.Genshin.Abstractions;
 
+/// <summary>
+/// Represents general info about the player
+/// </summary>
 public class PlayerInfo
 {
     public string? Uid { get; internal set; }
@@ -21,6 +24,10 @@ public class PlayerInfo
 
     public Uri?[] ShowcaseNameCardUris { get; internal set; } = [];
 }
+
+/// <summary>
+/// Represents Theater Info
+/// </summary>
 
 public class TheaterInfo
 {

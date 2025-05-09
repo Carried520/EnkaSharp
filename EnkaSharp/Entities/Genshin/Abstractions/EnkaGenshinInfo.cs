@@ -1,11 +1,12 @@
 using System.Text.Json;
 using EnkaSharp.Entities.Base.Raw;
+using EnkaSharp.Entities.Genshin.Raw;
 
-namespace EnkaSharp.Entities.Genshin.Raw;
+namespace EnkaSharp.Entities.Genshin.Abstractions;
 
 public class EnkaGenshinInfo
 {
-    public RestPlayerInfo? PlayerInfo { get; set; }
+    internal RestPlayerInfo? PlayerInfo { get; set; }
     public int? Ttl { get; set; }
     public string? Uid { get; set; }
     public Owner? Owner { get; set; }
@@ -22,12 +23,4 @@ public class EnkaGenshinInfo
             JsonSettings.CamelCase ,  cancellationToken);
         return info ?? throw new InvalidOperationException();
     }
-}
-
-public class Owner
-{
-    public string? Hash { get; set; }
-    public string? Username { get; set; }
-    public Profile? Profile { get; set; }
-    public int Id { get; set; }
 }
