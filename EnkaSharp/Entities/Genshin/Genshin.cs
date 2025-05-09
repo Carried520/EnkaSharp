@@ -1,7 +1,5 @@
-using System.Text.Json;
-using EnkaSharp.Entities.Base.Raw;
 using EnkaSharp.Entities.Genshin.Abstractions;
-using EnkaSharp.Entities.Genshin.Raw;
+using EnkaSharp.Retry;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace EnkaSharp.Entities.Genshin;
@@ -13,7 +11,6 @@ public class Genshin
 {
     private readonly IMemoryCache _cache;
     private readonly HttpClient _httpClient;
-
 
     public Genshin(IMemoryCache cache, HttpClient httpClient)
     {
@@ -30,6 +27,7 @@ public class Genshin
     /// <returns><see cref="EnkaGenshinData"/></returns>
     /// <exception cref="InvalidOperationException">In case <see cref="EnkaGenshinData"/> is null.</exception>
     /// <exception cref="OperationCanceledException">If cancellation is requested with <see cref="CancellationToken"/>.</exception>
+    /// <exception cref="AggregateException">When retries have failed - gathers all exceptions from failed attempts.</exception>
     public async Task<EnkaGenshinData> GetGenshinDataAsync(long uid, CancellationToken cancellationToken = default)
     {
         if (_cache.TryGetValue($"enka-user-uid-{uid}", out EnkaGenshinData? user))
@@ -39,7 +37,11 @@ public class Genshin
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        RestGenshinData newRestGenshinData = await RestGenshinData.GetUserAsync(_httpClient, uid, cancellationToken);
+        RestGenshinData newRestGenshinData = await RetryHelper.ExecuteAsync(
+            async () => await RestGenshinData.GetUserAsync(_httpClient, uid, cancellationToken),
+            EnkaClient.Config.RetryCount, EnkaClient.Config.RetryDelay);
+
+
         EnkaGenshinData enkaGenshinData = newRestGenshinData.ToGenshinData();
         _cache.Set($"enka-user-uid-{uid}", enkaGenshinData, TimeSpan.FromMinutes(5));
         return enkaGenshinData;
@@ -53,6 +55,7 @@ public class Genshin
     /// <returns><see cref="EnkaGenshinInfo"/></returns>
     /// <exception cref="InvalidOperationException">In case <see cref="EnkaGenshinInfo"/> is null.</exception>
     /// <exception cref="OperationCanceledException">If cancellation is requested with <see cref="CancellationToken"/>.</exception>
+    /// <exception cref="AggregateException">When retries have failed - gathers all exceptions from failed attempts.</exception>
     public async Task<EnkaGenshinInfo> GetGenshinInfoAsync(long uid, CancellationToken cancellationToken = default)
     {
         if (_cache.TryGetValue($"enka-userinfo-uid-{uid}", out EnkaGenshinInfo? userInfo))
@@ -62,7 +65,10 @@ public class Genshin
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        EnkaGenshinInfo newUserInfo = await EnkaGenshinInfo.GetEnkaInfo(_httpClient, uid, cancellationToken);
+        EnkaGenshinInfo newUserInfo = await RetryHelper.ExecuteAsync(
+            async () => await EnkaGenshinInfo.GetEnkaInfo(_httpClient, uid, cancellationToken),
+            EnkaClient.Config.RetryCount, EnkaClient.Config.RetryDelay);
+
         _cache.Set($"enka-userinfo-uid-{uid}", newUserInfo, TimeSpan.FromMinutes(5));
         return newUserInfo;
     }
