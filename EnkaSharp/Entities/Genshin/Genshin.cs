@@ -18,6 +18,7 @@ public class Genshin
             { Delay = EnkaClient.Config.RetryDelay, MaxRetryAttempts = EnkaClient.Config.RetryCount })
         .Build();
 
+
     public Genshin(IMemoryCache cache, HttpClient httpClient)
     {
         _cache = cache;
