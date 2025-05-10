@@ -1,6 +1,7 @@
 using EnkaSharp.Entities.Genshin.Abstractions;
-using EnkaSharp.Retry;
 using Microsoft.Extensions.Caching.Memory;
+using Polly;
+using Polly.Retry;
 
 namespace EnkaSharp.Entities.Genshin;
 
@@ -11,6 +12,11 @@ public class Genshin
 {
     private readonly IMemoryCache _cache;
     private readonly HttpClient _httpClient;
+
+    private readonly ResiliencePipeline _genshinResiliencePipeline = new ResiliencePipelineBuilder()
+        .AddRetry(new RetryStrategyOptions
+            { Delay = EnkaClient.Config.RetryDelay, MaxRetryAttempts = EnkaClient.Config.RetryCount })
+        .Build();
 
     public Genshin(IMemoryCache cache, HttpClient httpClient)
     {
@@ -37,10 +43,8 @@ public class Genshin
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        RestGenshinData newRestGenshinData = await RetryHelper.ExecuteAsync(
-            async () => await RestGenshinData.GetUserAsync(_httpClient, uid, cancellationToken),
-            EnkaClient.Config.RetryCount, EnkaClient.Config.RetryDelay);
-
+        RestGenshinData newRestGenshinData = await _genshinResiliencePipeline.ExecuteAsync(
+            async token => await RestGenshinData.GetUserAsync(_httpClient, uid, token), cancellationToken); 
 
         EnkaGenshinData enkaGenshinData = newRestGenshinData.ToGenshinData();
         _cache.Set($"enka-user-uid-{uid}", enkaGenshinData, TimeSpan.FromMinutes(5));
@@ -65,9 +69,8 @@ public class Genshin
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        EnkaGenshinInfo newUserInfo = await RetryHelper.ExecuteAsync(
-            async () => await EnkaGenshinInfo.GetEnkaInfo(_httpClient, uid, cancellationToken),
-            EnkaClient.Config.RetryCount, EnkaClient.Config.RetryDelay);
+        EnkaGenshinInfo newUserInfo = await _genshinResiliencePipeline.ExecuteAsync(
+            async token => await EnkaGenshinInfo.GetEnkaInfo(_httpClient, uid, token), cancellationToken);
 
         _cache.Set($"enka-userinfo-uid-{uid}", newUserInfo, TimeSpan.FromMinutes(5));
         return newUserInfo;
