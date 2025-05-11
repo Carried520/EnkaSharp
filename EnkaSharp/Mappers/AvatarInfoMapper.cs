@@ -76,7 +76,7 @@ internal static class AvatarInfoMapper
             TalentData talentInfo = genshinAssetHandler.Data.Talents?[skillId.ToString()] ?? throw new
                 InvalidOperationException();
             string? talentName = genshinAssetHandler.GetDataFromTextMap(talentInfo.NameTextMapHash.ToString());
-            Uri talentUrl = UriConstants.GetAssetUri(talentInfo.Icon);
+            Uri talentUrl = UriConstants.GetAssetUri(talentInfo.Icon , GameType.Genshin);
 
             int extraLevel = proudSkillExtraLevelMap.GetValueOrDefault(key, 0);
             talents.Add(new Talent

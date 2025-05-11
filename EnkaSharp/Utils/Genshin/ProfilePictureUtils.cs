@@ -18,7 +18,7 @@ public static class ProfilePictureUtils
             return false;
         
         string replacer = characterData.SideIconName.Replace("UI_AvatarIcon_Side_", "UI_AvatarIcon_");
-        uri = UriConstants.GetAssetUri(replacer);
+        uri = UriConstants.GetAssetUri(replacer , GameType.Genshin);
         return true;
     }
 }

@@ -46,14 +46,15 @@ internal static class PlayerInfoMapper
             return ProfilePictureUtils.TryGetCharacterIconUri(characterId, out Uri? pfpUri) ? pfpUri : null;
 
         string path = profilePicture.IconPath.Replace("_Circle", "");
-        return UriConstants.GetAssetUri(path);
+        return UriConstants.GetAssetUri(path, GameType.Genshin);
     }
 
     private static Uri?[] MapShowNameCardIdList(int[] nameCardIds)
     {
         var genshinAssetHandler = EnkaClient.GetAssets<GenshinAssetHandler>(GameType.Genshin);
         Dictionary<string, NameCard>? namecards = genshinAssetHandler.Data.NameCards;
-        return nameCardIds.Select(item => namecards?[item.ToString()].Icon).Select(UriConstants.GetAssetUri).ToArray();
+        return nameCardIds.Select(item => namecards?[item.ToString()].Icon)
+            .Select(icon => UriConstants.GetAssetUri(icon, GameType.Genshin)).ToArray();
     }
 
     private static Uri? MapNameCardId(int nameCardId)
@@ -65,7 +66,7 @@ internal static class PlayerInfoMapper
         Dictionary<string, NameCard>? namecards = genshinAssetHandler.Data.NameCards;
         string? icon = namecards?[nameCardId.ToString()].Icon;
         if (icon == null) return null;
-        Uri iconUri = UriConstants.GetAssetUri(icon);
+        Uri iconUri = UriConstants.GetAssetUri(icon , GameType.Genshin);
         return iconUri;
     }
 }

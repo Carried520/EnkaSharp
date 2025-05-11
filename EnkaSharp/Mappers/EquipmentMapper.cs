@@ -46,7 +46,7 @@ internal static class EquipmentMapper
             BaseAttack = baseAttack?.StatValue ?? 0,
             SecondaryStat = secondaryStat,
             Name = name ?? $"Genshin_Weapon_{equipItem.ItemId}",
-            IconUri = UriConstants.GetAssetUri(equipItem.Flat.Icon)
+            IconUri = UriConstants.GetAssetUri(equipItem.Flat.Icon , GameType.Genshin)
         };
     }
 
@@ -89,7 +89,7 @@ internal static class EquipmentMapper
             SubStats = substats,
             SetName = setName,
             Name = name,
-            Uri = UriConstants.GetAssetUri(equipItem.Flat.Icon),
+            Uri = UriConstants.GetAssetUri(equipItem.Flat.Icon , GameType.Genshin),
             SlotType = GetArtifactSlotType(equipItem.Flat.EquipType)
         };
     }

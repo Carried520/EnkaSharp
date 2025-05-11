@@ -24,7 +24,7 @@ internal static class ConstellationMapper
             throw new InvalidOperationException("Constellations were null!");
 
         return handler.Data.Constellations.TryGetValue(id.ToString(), out ConstellationData? constellationData)
-            ? UriConstants.GetAssetUri(constellationData.Icon)
+            ? UriConstants.GetAssetUri(constellationData.Icon , GameType.Genshin)
             : null;
     }
     private static string? GetConstellationName(int id)
