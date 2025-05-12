@@ -9,9 +9,13 @@ Please abide by license terms. You must provide MIT license in copied/derived in
 ## Versioning
 This project abides by Microsoft's Semantic Versioning.
 MAJOR.MINOR.PATCH
-MAJOR - incompatible API changes are made.
-MINOR - functionality in a backwards-compatible manner is added.
-PATCH - backwards-compatible bug fixes are made.
+### MAJOR 
+Incompatible , breaking API changes are made.
+### MINOR 
+ Functionality in a backwards-compatible manner is added.
+### PATCH 
+Backwards-compatible bug fixes are made.
+
 See more : [Microsoft Versioning Docs](https://learn.microsoft.com/en-us/dotnet/csharp/versioning#authoring-libraries)
 ## Branches
 Main - Branch with release ready code.
