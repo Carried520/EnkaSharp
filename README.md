@@ -14,17 +14,6 @@ This project follows Semantic Versioning (SemVer), which uses a version format o
 - **Major** — Increases when there are incompatible changes that break backward compatibility.
 
 See more : [Microsoft Versioning Docs](https://learn.microsoft.com/en-us/dotnet/csharp/versioning#authoring-libraries)
-## Branches
-### Main 
-Branch with release ready code.
-### Dev 
-Developement branch. Pull Requests are targetted here.
-### Feature/X 
-Feature branch that targets dev. Aims to introduce new feature.
-### Bugfix/X 
-Branch that aims to fix bugs. Targets dev.
-### Docs/X 
-Branch that adds new documentation. Targets dev.
 
 ## Installation (Nuget)
 [EnkaSharp](https://www.nuget.org/packages/EnkaSharp)
@@ -77,3 +66,9 @@ public class StartupService : BackgroundService
 EnkaGenshinData genshinData = await _enkaClient.Genshin.GetGenshinDataAsync(uid);
 // access properties freely
 ```
+
+### Branches
+- **Main** — This is the `main` branch. This contains the latest stable release and is the exact source running in production.
+- **Dev** — This is the `development` branch. This contains the latest staging release that is marked for deployment and is the exact source running on staging.
+- **Feature** — This is a `feature/*` branch. This contains a new feature that will be added. Any feature should have its own branch. Once completed the branch should be merged into the `development` branch, afterward the feature branch should be deleted.
+- **Bugfix** — This is a `bugfix/*` branch. This contains a bugfix that will be added. Any bugfix should have its own branch. Once completed the branch should be merged into the `development` branch, afterward the bugfix branch should be deleted.
