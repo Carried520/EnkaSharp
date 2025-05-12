@@ -15,7 +15,7 @@ This project follows Semantic Versioning (SemVer), which uses a version format o
 
 See more : [Microsoft Versioning Docs](https://learn.microsoft.com/en-us/dotnet/csharp/versioning#authoring-libraries)
 
-## Installation (Nuget)
+## 📥 Installation (Nuget)
 [EnkaSharp](https://www.nuget.org/packages/EnkaSharp)
 ## Game support
 
@@ -67,7 +67,7 @@ EnkaGenshinData genshinData = await _enkaClient.Genshin.GetGenshinDataAsync(uid)
 // access properties freely
 ```
 
-### Branches
+### 🏷️ Branches
 - **Main** — This is the `main` branch. This contains the latest stable release and is the exact source running in production.
 - **Dev** — This is the `development` branch. This contains the latest staging release that is marked for deployment and is the exact source running on staging.
 - **Feature** — This is a `feature/*` branch. This contains a new feature that will be added. Any feature should have its own branch. Once completed the branch should be merged into the `development` branch, afterward the feature branch should be deleted.
