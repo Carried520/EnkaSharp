@@ -18,11 +18,16 @@ Backwards-compatible bug fixes are made.
 
 See more : [Microsoft Versioning Docs](https://learn.microsoft.com/en-us/dotnet/csharp/versioning#authoring-libraries)
 ## Branches
-Main - Branch with release ready code.
-Dev - Developement branch. Pull Requests are targetted here.
-Feature/X - Feature branch that targets dev. Aims to introduce new feature.
-Bugfix/X - Branch that aims to fix bugs. Targets dev.
-Docs/X - Branch that adds new documentation. Targets dev.
+### Main 
+Branch with release ready code.
+### Dev 
+Developement branch. Pull Requests are targetted here.
+### Feature/X 
+Feature branch that targets dev. Aims to introduce new feature.
+### Bugfix/X 
+Branch that aims to fix bugs. Targets dev.
+### Docs/X 
+Branch that adds new documentation. Targets dev.
 
 ## Installation (Nuget)
 [EnkaSharp](https://www.nuget.org/packages/EnkaSharp)
