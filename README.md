@@ -6,15 +6,12 @@ A wrapper over enka.network API , supporting Dependency Injection and MemoryCach
 This project is open source project , licensed under MIT license. 
 Please abide by license terms. You must provide MIT license in copied/derived in parts that contain / derive from this code.
 
-## Versioning
-This project abides by Microsoft's Semantic Versioning.
-MAJOR.MINOR.PATCH
-### MAJOR 
-Incompatible , breaking API changes are made.
-### MINOR 
- Functionality in a backwards-compatible manner is added.
-### PATCH 
-Backwards-compatible bug fixes are made.
+##📦 Semantic Versioning (SemVer)
+This project follows Semantic Versioning (SemVer), which uses a version format of `MAJOR.MINOR.PATCH`.
+
+- **Patch** — Increases when bug fixes, new features, new methods or small improvements are made that do not affect compatibility.
+- **Minor** — Increases when new features or functionality are added in a backward-compatible manner.
+- **Major** — Increases when there are incompatible changes that break backward compatibility.
 
 See more : [Microsoft Versioning Docs](https://learn.microsoft.com/en-us/dotnet/csharp/versioning#authoring-libraries)
 ## Branches
