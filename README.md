@@ -6,7 +6,7 @@ A wrapper over enka.network API , supporting Dependency Injection and MemoryCach
 This project is open source project , licensed under MIT license. 
 Please abide by license terms. You must provide MIT license in copied/derived in parts that contain / derive from this code.
 
-##📦 Semantic Versioning (SemVer)
+## 📦 Semantic Versioning (SemVer)
 This project follows Semantic Versioning (SemVer), which uses a version format of `MAJOR.MINOR.PATCH`.
 
 - **Patch** — Increases when bug fixes, new features, new methods or small improvements are made that do not affect compatibility.
