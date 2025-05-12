@@ -2,6 +2,24 @@
 ## About
 A wrapper over enka.network API , supporting Dependency Injection and MemoryCache.
 
+## License
+This project is open source project , licensed under MIT license. 
+Please abide by license terms. You must provide MIT license in copied/derived in parts that contain / derive from this code.
+
+## Versioning
+This project abides by Microsoft's Semantic Versioning.
+MAJOR.MINOR.PATCH
+MAJOR - incompatible API changes are made.
+MINOR - functionality in a backwards-compatible manner is added.
+PATCH - backwards-compatible bug fixes are made.
+See more : [Microsoft Versioning Docs](https://learn.microsoft.com/en-us/dotnet/csharp/versioning#authoring-libraries)
+## Branches
+Main - Branch with release ready code.
+Dev - Developement branch. Pull Requests are targetted here.
+Feature/X - Feature branch that targets dev. Aims to introduce new feature.
+Bugfix/X - Branch that aims to fix bugs. Targets dev.
+Docs/X - Branch that adds new documentation. Targets dev.
+
 ## Installation (Nuget)
 [EnkaSharp](https://www.nuget.org/packages/EnkaSharp)
 ## Game support
