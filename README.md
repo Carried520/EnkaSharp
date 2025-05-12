@@ -2,7 +2,7 @@
 ## About
 A wrapper over enka.network API , supporting Dependency Injection and MemoryCache.
 
-## License
+## 📋 License
 This project is open source project , licensed under MIT license. 
 Please abide by license terms. You must provide MIT license in copied/derived in parts that contain / derive from this code.
 
